@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help By Rana - Professional Web Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <!-- Boxicons for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo" id="nav-logo">
+                <i class='bx bx-briefcase-alt-2'></i>
+                Help By <span>Rana</span>
+            </a>
+            <div class="nav-links">
+                <a href="#" id="nav-home" class="active">Dashboard</a>
+                <a href="#categories" id="nav-categories">Browse Services</a>
+                <a href="#" id="nav-admin" class="btn-outline">Admin Panel</a>
+            </div>
+            <div class="mobile-menu-btn">
+                <i class='bx bx-menu'></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main id="app-content">
+        <!-- Home View -->
+        <section id="view-home" class="view active-view">
+            <!-- Hero Section -->
+            <header class="hero">
+                <div class="hero-content">
+                    <span class="badge">#1 Verified Worker Network</span>
+                    <h1>Find trusted professionals for your <span class="highlight">daily needs</span></h1>
+                    <p>Connect instantly with skilled and verified workers in your area. Use our premium dashboard to
+                        instantly filter down exactly what you need.</p>
+
+                    <div class="search-container">
+                        <div class="search-box">
+                            <i class='bx bx-search'></i>
+                            <input type="text" id="main-search"
+                                placeholder="Search a category (e.g. Plumber, Electrician) or area...">
+                            <button class="btn-primary" id="search-btn">Find Now</button>
+                        </div>
+                    </div>
+
+                    <div class="quick-links">
+                        <span>Popular Categories:</span>
+                        <a href="#" class="quick-link" data-cat="Plumber">Plumber</a>
+                        <a href="#" class="quick-link" data-cat="Electrician">Electrician</a>
+                        <a href="#" class="quick-link" data-cat="Cleaner">Cleaner</a>
+                        <a href="#" class="quick-link" data-cat="Driver">Driver</a>
+                        <a href="#" class="quick-link" data-cat="AC/Fridge repair">AC Repair</a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Featured Workers Section -->
+            <section class="section py-lg" id="featured-section">
+                <div class="container">
+                    <div class="section-header"
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem;">
+                        <h2>Top Rated Professionals</h2>
+                        <a href="#categories" style="color: var(--primary-light); font-weight: 600;">View All <i
+                                class='bx bx-right-arrow-alt'></i></a>
+                    </div>
+                    <div class="grid" id="featured-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Banner CTA -->
+            <section class="container">
+                <div class="contact-banner">
+                    <h2>Are You a Professional Helper?</h2>
+                    <p>Join our growing network and expand your reach. Contact us with your details, skills, and
+                        experience to be added to our local directory absolutely free.</p>
+                    <a href="mailto:helpbyrana@gmail.com" class="btn-accent"><i class='bx bx-envelope'></i> Email:
+                        helpbyrana@gmail.com</a>
+                </div>
+            </section>
+        </section>
+
+        <!-- Categories & Search Results View (The Dashboard view) -->
+        <section id="view-categories" class="view">
+            <div class="container py-lg" id="category-container">
+                <!-- If a specific category is searched, a header image component is prepended here via JS -->
+
+                <div class="view-header">
+                    <h2>Filters & Preferences</h2>
+                    <div class="filters">
+                        <select id="filter-experience">
+                            <option value="">Any Experience</option>
+                            <option value="1">1+ Years</option>
+                            <option value="3">3+ Years</option>
+                            <option value="5">5+ Years</option>
+                        </select>
+                        <select id="filter-rating">
+                            <option value="">Any Rating</option>
+                            <option value="3">3.0+ Stars</option>
+                            <option value="4">4.0+ Stars</option>
+                            <option value="4.5">4.5+ Stars</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="category-list" id="category-list-container">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Worker Profile Modal -->
+        <div class="modal" id="profile-modal">
+            <div class="modal-content">
+                <button class="modal-close" id="close-profile"><i class='bx bx-x'></i></button>
+                <div id="profile-content">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Premium Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Help By <span>Rana</span></h3>
+                    <p>The premium local directory for everyday services. We aim to revolutionize how communities
+                        connect with verified daily helpers, providing a professional dashboard for effortless discovery
+                        and reliable support.</p>
+                    <div class="social-icons">
+                        <a href="https://facebook.com/helpbyrana" target="_blank" class="social-icon"
+                            title="Facebook"><i class='bx bxl-facebook'></i></a>
+                        <a href="https://instagram.com/helpbyrana" target="_blank" class="social-icon"
+                            title="Instagram"><i class='bx bxl-instagram'></i></a>
+                        <a href="https://twitter.com/helpbyrana" target="_blank" class="social-icon" title="Twitter"><i
+                                class='bx bxl-twitter'></i></a>
+                        <a href="https://linkedin.com/company/helpbyrana" target="_blank" class="social-icon"
+                            title="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+                    </div>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; font-weight: 500;">Follow <span
+                            style="color: var(--primary-light);">@helpbyrana</span></p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Contact Us</h4>
+                    <p style="margin-bottom: 0.5rem;"><i class='bx bx-envelope'
+                            style="margin-right: 8px; color: var(--primary-light);"></i> helpbyrana@gmail.com</p>
+                    <p style="font-size: 0.95rem;">Contact us to add your profile to our platform!</p>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <a href="#">Dashboard</a>
+                    <a href="#categories">Browse Categories</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Help By Rana. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
