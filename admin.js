@@ -26,20 +26,10 @@ const navAdd = document.getElementById('link-add');
 // Auth State
 let isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
 
-// Simple hash function to obfuscate the plain text passwords in the code
-const hashString = str => {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash &= hash; // Convert to 32bit integer
-    }
-    return new Uint32Array([hash])[0].toString(36);
-};
-
-// Target hashes (admin / admin123)
-const TARGET_USER_HASH = "8sw";
-const TARGET_PASS_HASH = "lyxft4";
+// Stored encoded credentials (base64 encoded, not plain text)
+// btoa("admin") = "YWRtaW4="  |  btoa("admin123") = "YWRtaW4xMjM="
+const _u = "YWRtaW4=";
+const _p = "YWRtaW4xMjM=";
 
 // Initialize Admin
 function initAdmin() {
@@ -47,11 +37,11 @@ function initAdmin() {
         document.getElementById('admin-login-overlay').style.display = 'flex';
         document.getElementById('login-form').addEventListener('submit', function (e) {
             e.preventDefault();
-            const user = document.getElementById('admin-username').value;
-            const pass = document.getElementById('admin-password').value;
+            const user = document.getElementById('admin-username').value.trim();
+            const pass = document.getElementById('admin-password').value.trim();
 
-            // Hash the input and compare with stored hashes
-            if (hashString(user) === TARGET_USER_HASH && hashString(pass) === TARGET_PASS_HASH) {
+            // Encode input and compare with stored encoded values
+            if (btoa(user) === _u && btoa(pass) === _p) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 document.getElementById('admin-login-overlay').style.display = 'none';
                 loadAdminData();
