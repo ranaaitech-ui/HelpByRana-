@@ -187,15 +187,14 @@
           ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:.75rem;right:.75rem;font-size:.7rem;">✓ Verified</span>' : ''}
         </div>
         <div class="worker-meta">
-          <span class="worker-meta-item">📍 ${w.area}, ${w.city}</span>
+          <span class="worker-meta-item">📍 ${w.city}</span>
           <span class="worker-meta-item">💼 ${w.experience} yrs exp</span>
-          <span class="worker-meta-item">💸 ${w.price}</span>
-          <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available Now' : 'Busy'}</span>
+          <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available' : 'Busy'}</span>
         </div>
         <div class="worker-actions">
-          <a href="tel:${w.phone}" class="btn btn-primary btn-sm"><i class='bx bx-phone'></i> Call</a>
-          <a href="https://wa.me/${w.whatsapp}" target="_blank" class="btn btn-green btn-sm"><i class='bx bxl-whatsapp'></i> WA</a>
-          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm"><i class='bx bx-star'></i> Profile & Rate</a>
+          <a href="tel:${w.phone}" class="btn btn-primary btn-sm">Call</a>
+          <a href="https://wa.me/${w.whatsapp}" target="_blank" class="btn btn-green btn-sm">WA</a>
+          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm">Profile</a>
         </div>
       </div>`).join('');
         }
