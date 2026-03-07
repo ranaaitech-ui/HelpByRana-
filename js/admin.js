@@ -26,14 +26,53 @@ const navAdd = document.getElementById('link-add');
 const navCategories = document.getElementById('link-categories');
 const navReviews = document.getElementById('link-reviews');
 
+// Auth State
+let isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+
+// Encoded credentials (base64)
+const _u = "YWRtaW4=";       // admin
+const _p = "YWRtaW4xMjM=";   // admin123
+
 // Initialize Admin
 function initAdmin() {
+    if (!isLoggedIn) {
+        document.getElementById('admin-login-overlay').style.display = 'flex';
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const user = document.getElementById('admin-username').value.trim();
+            const pass = document.getElementById('admin-password').value.trim();
+            if (btoa(user) === _u && btoa(pass) === _p) {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                document.getElementById('admin-login-overlay').style.display = 'none';
+                loadAdminData();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+            }
+        });
+    } else {
+        document.getElementById('admin-login-overlay').style.display = 'none';
+        loadAdminData();
+    }
+}
+
+function loadAdminData() {
     adminWorkers = db.getWorkers();
     adminCategories = db.getCategories();
 
     populateCategories();
     renderTable();
     setupEventListeners();
+
+    // Add logout button
+    const navLinksEl = document.querySelector('.nav-links');
+    if (navLinksEl && !document.getElementById('nav-logout')) {
+        navLinksEl.innerHTML += `<a href="#" id="nav-logout" style="color:#EF4444;margin-left:1rem;"><i class='bx bx-log-out'></i> Logout</a>`;
+        document.getElementById('nav-logout').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.reload();
+        });
+    }
 }
 
 function setupEventListeners() {
