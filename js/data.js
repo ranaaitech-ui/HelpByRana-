@@ -125,23 +125,82 @@ const db = {
             return raw ? JSON.parse(raw) : [];
         } catch { return []; }
     },
+    _saveRegistry(reg) {
+        localStorage.setItem('hbr_registry', JSON.stringify(reg));
+    },
+
+    // Public site: only return approved registered workers + built-in workers
     getWorkers() {
-        const reg = this._getRegistry();
+        const reg = this._getRegistry().filter(w => w.status === 'approved' || !w.status);
         return [...WORKERS_DATA, ...reg];
     },
+
+    // Admin: all registered workers regardless of status
+    getAllRegistered() {
+        return this._getRegistry();
+    },
+
+    // Admin: pending registrations awaiting review
+    getPendingWorkers() {
+        return this._getRegistry().filter(w => w.status === 'pending');
+    },
+
     getCategories() { return CATEGORIES; },
+
+    // Called from register.html — saves as PENDING (not visible on public site)
     addWorker(w) {
         const reg = this._getRegistry();
         const newId = Date.now();
-        reg.push({ ...w, id: newId, rating: 5.0, reviews: 0, verified: false, available: true, photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(w.name)}&background=2563EB&color=fff&size=128`, skills: [w.category] });
-        localStorage.setItem('hbr_registry', JSON.stringify(reg));
+        reg.push({
+            ...w,
+            id: newId,
+            status: 'pending',        // <-- awaiting admin approval
+            rating: 5.0,
+            reviews: 0,
+            verified: false,
+            available: true,
+            photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(w.name)}&background=2563EB&color=fff&size=128`,
+            skills: w.skills || [w.category],
+            registeredAt: new Date().toISOString(),
+        });
+        this._saveRegistry(reg);
     },
+
+    // Admin adds worker directly — saves as APPROVED immediately
+    addWorkerDirect(w) {
+        const reg = this._getRegistry();
+        const newId = Date.now();
+        reg.push({
+            ...w,
+            id: newId,
+            status: 'approved',
+            rating: 5.0,
+            reviews: 0,
+            verified: false,
+            available: true,
+            photo: `https://ui-avatars.com/api/?name=${encodeURIComponent(w.name)}&background=2563EB&color=fff&size=128`,
+            skills: w.skills || [w.category],
+            registeredAt: new Date().toISOString(),
+        });
+        this._saveRegistry(reg);
+    },
+
+    // Admin approves a pending worker
+    approveWorker(id) {
+        const reg = this._getRegistry().map(w => w.id === id ? { ...w, status: 'approved', verified: true } : w);
+        this._saveRegistry(reg);
+    },
+
+    // Admin rejects a pending worker
+    rejectWorker(id) {
+        const reg = this._getRegistry().filter(w => w.id !== id);
+        this._saveRegistry(reg);
+    },
+
     deleteWorker(id) {
         const reg = this._getRegistry().filter(w => w.id !== id);
-        localStorage.setItem('hbr_registry', JSON.stringify(reg));
+        this._saveRegistry(reg);
     },
-    saveData(d) {
-        if (d?.workers) localStorage.setItem('hbr_registry', JSON.stringify(d.workers.filter(w => !WORKERS_DATA.find(wd => wd.id === w.id))));
-    },
+
     getReviews() { return REVIEWS; },
 };

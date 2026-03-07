@@ -6,141 +6,257 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel — Help By Rana</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <style>
-        /* Admin-specific overrides */
-        .admin-wrap {
+        /* Admin-specific styles */
+        .admin-body {
             display: flex;
-            min-height: calc(100vh - 61px);
+            min-height: 100vh;
         }
 
         .sidebar {
-            width: 220px;
+            width: 250px;
             background: var(--surface);
             border-right: 1px solid var(--border);
-            padding: 1.5rem 1rem;
+            padding: 0;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar h3 {
-            font-size: .85rem;
+        .sidebar-brand {
+            padding: 1.5rem 1.25rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+        }
+
+        .sidebar-brand span {
+            color: var(--primary-light);
+        }
+
+        .sidebar-label {
+            font-size: .72rem;
             text-transform: uppercase;
-            letter-spacing: .08em;
+            letter-spacing: .1em;
             color: var(--text-dim);
-            margin-bottom: 1rem;
-            padding: 0 .5rem;
+            font-weight: 700;
+            padding: 1.25rem 1.25rem .5rem;
         }
 
         .sidebar a {
             display: flex;
             align-items: center;
-            gap: .6rem;
-            padding: .65rem 1rem;
-            border-radius: var(--radius-md);
+            gap: .7rem;
+            padding: .7rem 1.25rem;
             color: var(--text-muted);
-            font-size: .9rem;
             font-weight: 500;
-            margin-bottom: .25rem;
+            font-size: .88rem;
             transition: var(--transition);
+            border-left: 3px solid transparent;
+            position: relative;
         }
 
-        .sidebar a:hover,
+        .sidebar a:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, .03);
+        }
+
         .sidebar a.active {
-            background: rgba(37, 99, 235, .1);
             color: var(--primary-light);
+            background: rgba(37, 99, 235, .07);
+            border-left-color: var(--primary);
         }
 
+        .sidebar a .badge-count {
+            margin-left: auto;
+            background: var(--danger);
+            color: #fff;
+            font-size: .7rem;
+            font-weight: 700;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 .35rem;
+        }
+
+        .sidebar-bottom {
+            margin-top: auto;
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Main content */
         .admin-main {
             flex: 1;
-            padding: 2rem 2.5rem;
-            background: var(--bg);
-            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
         }
 
-        .admin-header {
+        .admin-topbar {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.75rem;
         }
 
-        table {
+        .page-heading {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            background: var(--bg);
+        }
+
+        /* Table */
+        .data-table {
             width: 100%;
             border-collapse: collapse;
             font-size: .875rem;
         }
 
-        th {
-            background: var(--surface-2);
+        .data-table th {
+            background: var(--surface);
             padding: .875rem 1.25rem;
             text-align: left;
-            font-size: .78rem;
+            font-size: .75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: .06em;
+            letter-spacing: .07em;
             color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
         }
 
-        td {
+        .data-table td {
             padding: .875rem 1.25rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(255, 255, 255, .04);
             vertical-align: middle;
         }
 
-        .tbl-action {
+        .data-table tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        /* Action buttons */
+        .act-btn {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
-            width: 32px;
-            height: 32px;
+            gap: .3rem;
+            padding: .35rem .75rem;
             border-radius: var(--radius-sm);
+            font-size: .8rem;
+            font-weight: 600;
             cursor: pointer;
             border: none;
             transition: var(--transition);
-            font-size: .9rem;
+            font-family: inherit;
         }
 
-        .tbl-view {
+        .act-approve {
             background: rgba(16, 185, 129, .12);
             color: var(--secondary);
         }
 
-        .tbl-delete {
-            background: rgba(239, 68, 68, .12);
-            color: var(--danger);
-        }
-
-        .tbl-view:hover {
+        .act-approve:hover {
             background: var(--secondary);
             color: #fff;
         }
 
-        .tbl-delete:hover {
+        .act-reject {
+            background: rgba(239, 68, 68, .12);
+            color: var(--danger);
+        }
+
+        .act-reject:hover {
             background: var(--danger);
             color: #fff;
         }
 
-        .form-panel {
+        .act-view {
+            background: rgba(37, 99, 235, .12);
+            color: var(--primary-light);
+        }
+
+        .act-view:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .act-delete {
+            background: rgba(239, 68, 68, .08);
+            color: var(--danger);
+        }
+
+        .act-delete:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        /* Stat cards */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .stat-card .val {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-card .lbl {
+            font-size: .8rem;
+            color: var(--text-dim);
+            margin-top: .2rem;
+        }
+
+        .stat-card.pending-card {
+            border-color: rgba(245, 158, 11, .3);
+        }
+
+        .stat-card.pending-card .val {
+            color: var(--accent);
+        }
+
+        /* Form panel */
+        .panel {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-lg);
             padding: 2rem;
-            margin-bottom: 2rem;
-            display: none;
         }
 
-        .form-panel h3 {
+        .panel h3 {
             margin-bottom: 1.5rem;
             padding-bottom: .75rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .form-grid {
+        .fg-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.25rem;
-            margin-bottom: 1.25rem;
         }
 
         .fg {
@@ -150,7 +266,7 @@
         }
 
         .fg.full {
-            grid-column: 1/-1;
+            grid-column: 1 / -1;
         }
 
         .fg label {
@@ -177,7 +293,6 @@
         .fg select:focus,
         .fg textarea:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
         }
 
         .fg select option {
@@ -186,11 +301,34 @@
 
         .fg textarea {
             resize: vertical;
-            min-height: 90px;
+            min-height: 80px;
+        }
+
+        /* Pending card */
+        .pending-row {
+            background: rgba(245, 158, 11, .04);
+        }
+
+        .pending-badge {
+            background: rgba(245, 158, 11, .15);
+            color: var(--accent);
+            padding: .2rem .6rem;
+            border-radius: 50px;
+            font-size: .75rem;
+            font-weight: 700;
+        }
+
+        .approved-badge {
+            background: rgba(16, 185, 129, .1);
+            color: var(--secondary);
+            padding: .2rem .6rem;
+            border-radius: 50px;
+            font-size: .75rem;
+            font-weight: 700;
         }
 
         /* Login overlay */
-        #login-overlay {
+        #loginOverlay {
             position: fixed;
             inset: 0;
             background: var(--bg);
@@ -200,65 +338,75 @@
             justify-content: center;
         }
 
-        .login-box {
+        .login-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius-xl);
-            padding: 2.5rem;
+            padding: 2.5rem 2rem;
             width: min(400px, 90vw);
-            text-align: center;
             box-shadow: var(--shadow-lg);
         }
 
-        .login-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            background: rgba(37, 99, 235, .1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.25rem;
-            font-size: 1.8rem;
+        .login-card .icon {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
         }
 
-        .login-box h2 {
+        .login-card h2 {
+            text-align: center;
             margin-bottom: .5rem;
         }
 
-        .login-box p {
+        .login-card p {
+            text-align: center;
             font-size: .9rem;
-            margin-bottom: 2rem;
-        }
-
-        .login-box .fg {
-            text-align: left;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.75rem;
         }
 
         .err-msg {
             color: var(--danger);
             font-size: .85rem;
-            margin-top: 1rem;
+            margin-top: .75rem;
             display: none;
-            font-weight: 500;
+            text-align: center;
         }
 
-        @media (max-width:768px) {
-            .admin-wrap {
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-body {
                 flex-direction: column;
             }
 
             .sidebar {
                 width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
             }
 
-            .admin-main {
-                padding: 1.5rem 1rem;
+            .sidebar a {
+                flex: 1;
+                justify-content: center;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+                min-width: 100px;
             }
 
-            .form-grid {
+            .sidebar a.active {
+                border-bottom-color: var(--primary);
+                border-left: none;
+            }
+
+            .admin-content {
+                padding: 1rem;
+            }
+
+            .fg-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .stat-row {
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -266,112 +414,183 @@
 
 <body>
 
-    <!-- ── LOGIN OVERLAY ────────────────────────────────────────── -->
-    <div id="login-overlay">
-        <div class="login-box">
-            <div class="login-icon">🔐</div>
-            <h2>Admin Login</h2>
-            <p class="text-muted">Enter your credentials to access the dashboard</p>
-            <form id="login-form">
-                <div class="fg">
+    <!-- ── LOGIN OVERLAY ─────────────────────────────────────── -->
+    <div id="loginOverlay">
+        <div class="login-card">
+            <div class="icon">🔐</div>
+            <h2>Admin Panel</h2>
+            <p class="text-muted">Help By Rana — Secure Login</p>
+            <form id="loginForm">
+                <div class="fg" style="margin-bottom:1rem;">
                     <label>Username</label>
-                    <input type="text" id="admin-user" autocomplete="username">
+                    <input type="text" id="uname" placeholder="Enter username" autocomplete="username">
                 </div>
-                <div class="fg">
+                <div class="fg" style="margin-bottom:1.5rem;">
                     <label>Password</label>
-                    <input type="password" id="admin-pass" autocomplete="current-password">
+                    <input type="password" id="upass" placeholder="Enter password" autocomplete="current-password">
                 </div>
-                <button type="submit" class="btn btn-primary w-full" style="width:100%;justify-content:center;">Login to
-                    Dashboard</button>
+                <button type="submit" class="btn btn-primary w-full" style="width:100%;justify-content:center;">
+                    <i class='bx bx-log-in'></i> Login
+                </button>
             </form>
-            <p class="err-msg" id="login-err">❌ Incorrect username or password!</p>
-            <div style="margin-top:1.5rem;">
-                <a href="index.html" style="font-size:.85rem;color:var(--text-dim);">← Back to Website</a>
+            <p class="err-msg" id="loginErr">❌ Invalid credentials. Try again.</p>
+            <div style="text-align:center;margin-top:1.5rem;">
+                <a href="index.html" style="font-size:.82rem;color:var(--text-dim);">← Back to Website</a>
             </div>
         </div>
     </div>
 
-    <!-- ── ADMIN LAYOUT ─────────────────────────────────────────── -->
-    <div id="admin-ui" style="display:none;">
-        <!-- Navbar -->
-        <nav class="navbar" style="position:sticky;top:0;z-index:100;">
-            <div class="container nav-inner">
-                <a href="index.html" class="logo">🔧 Help By <span>Rana</span></a>
-                <div style="display:flex;align-items:center;gap:1rem;">
-                    <a href="index.html" class="btn btn-secondary btn-sm">← Website</a>
-                    <button id="btn-logout" class="btn btn-sm"
-                        style="background:rgba(239,68,68,.1);color:var(--danger);border-radius:50px;">
-                        <i class='bx bx-log-out'></i> Logout
-                    </button>
+    <!-- ── ADMIN UI ───────────────────────────────────────────── -->
+    <div id="adminUI" style="display:none;" class="admin-body">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">🔧 Help By <span>Rana</span></div>
+            <div class="sidebar-label">Management</div>
+            <a href="#" id="navDash" class="active"><i class='bx bx-tachometer'></i> Dashboard</a>
+            <a href="#" id="navWorkers"><i class='bx bx-list-ul'></i> All Workers</a>
+            <a href="#" id="navPending"><i class='bx bx-time-five'></i> Pending Reviews <span class="badge-count"
+                    id="pendingCount">0</span></a>
+            <a href="#" id="navAdd"><i class='bx bx-user-plus'></i> Add Worker</a>
+            <a href="#" id="navCats"><i class='bx bx-grid-alt'></i> Categories</a>
+            <div class="sidebar-bottom">
+                <a href="index.html"
+                    style="color:var(--text-dim);font-size:.85rem;padding:.5rem 0;display:flex;gap:.5rem;align-items:center;border-left:none!important;">
+                    <i class='bx bx-home'></i> View Website
+                </a>
+                <button id="btnLogout" class="btn btn-sm"
+                    style="width:100%;margin-top:.5rem;justify-content:center;background:rgba(239,68,68,.1);color:var(--danger);border-radius:var(--radius-md);">
+                    <i class='bx bx-log-out'></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main -->
+        <div class="admin-main">
+            <div class="admin-topbar">
+                <div class="page-heading" id="pageHeading">Dashboard</div>
+                <div style="display:flex;gap:.75rem;align-items:center;">
+                    <span class="badge badge-green">Admin</span>
                 </div>
             </div>
-        </nav>
 
-        <div class="admin-wrap">
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <h3>Admin Panel</h3>
-                <a href="#" id="nav-workers" class="active"><i class='bx bx-list-ul'></i> Manage Workers</a>
-                <a href="#" id="nav-add"><i class='bx bx-user-plus'></i> Add Worker</a>
-                <a href="#" id="nav-cats"><i class='bx bx-grid-alt'></i> Categories</a>
-            </aside>
+            <div class="admin-content">
 
-            <!-- Main Content -->
-            <main class="admin-main">
-
-                <!-- SECTION: Manage Workers -->
-                <div id="sec-workers">
-                    <div class="admin-header">
-                        <h2>Manage Workers</h2>
-                        <button class="btn btn-primary btn-sm" id="btn-go-add"><i class='bx bx-plus'></i> Add
-                            Worker</button>
+                <!-- ── DASHBOARD ─── -->
+                <div id="secDash">
+                    <div class="stat-row">
+                        <div class="stat-card"><span class="val" id="statTotal"
+                                style="color:var(--primary-light);">0</span>
+                            <div class="lbl"><i class='bx bx-group'></i> Total Workers</div>
+                        </div>
+                        <div class="stat-card pending-card"><span class="val" id="statPending">0</span>
+                            <div class="lbl"><i class='bx bx-time'></i> Pending Approval</div>
+                        </div>
+                        <div class="stat-card"><span class="val" id="statCats" style="color:var(--secondary);">22</span>
+                            <div class="lbl"><i class='bx bx-grid-alt'></i> Categories</div>
+                        </div>
+                        <div class="stat-card"><span class="val" style="color:var(--accent);">4.7★</span>
+                            <div class="lbl"><i class='bx bx-star'></i> Avg. Rating</div>
+                        </div>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Worker</th>
-                                    <th>Category</th>
-                                    <th>Location</th>
-                                    <th>Rating / Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="workers-tbody">
-                                <tr>
-                                    <td colspan="6" style="text-align:center;padding:2rem;color:var(--text-dim);">
-                                        Loading...</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <!-- Pending alert box -->
+                    <div id="pendingAlert"
+                        style="display:none; background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.3); border-radius:var(--radius-lg); padding:1.25rem 1.5rem; margin-bottom:2rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+                        <div><span style="font-size:1.2rem;">⏳</span> <strong id="pendingMsg"></strong><br><span
+                                style="font-size:.85rem;color:var(--text-muted);">New worker registrations need your
+                                review.</span></div>
+                        <button class="btn btn-accent btn-sm" id="btnGoReview"><i class='bx bx-check-shield'></i> Review
+                            Now</button>
+                    </div>
+                    <div class="panel">
+                        <h3>Recent Workers</h3>
+                        <div class="table-wrap" style="overflow-x:auto;">
+                            <table class="data-table" id="dashTable">
+                                <thead>
+                                    <tr>
+                                        <th>Worker</th>
+                                        <th>Category</th>
+                                        <th>City</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashTbody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <!-- SECTION: Add Worker -->
-                <div id="sec-add" style="display:none;">
-                    <div class="admin-header">
-                        <h2>Add New Worker</h2>
-                        <button class="btn btn-secondary btn-sm" id="btn-back-workers">← Back to List</button>
+                <!-- ── ALL WORKERS ─── -->
+                <div id="secWorkers" style="display:none;">
+                    <div
+                        style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+                        <div>
+                            <h2 style="font-size:1.25rem;margin-bottom:.25rem;">All Workers</h2>
+                            <p class="text-dim" style="font-size:.85rem;" id="workersSubtitle"></p>
+                        </div>
+                        <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+                            <input type="text" id="searchWorker" placeholder="🔍 Search workers..."
+                                style="background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:.5rem 1rem;color:var(--text);font-family:inherit;font-size:.85rem;outline:none;min-width:200px;">
+                            <button class="btn btn-primary btn-sm" id="btnGoAdd2"><i class='bx bx-plus'></i> Add
+                                Worker</button>
+                        </div>
                     </div>
-                    <div class="form-panel" style="display:block;">
+                    <div class="panel" style="padding:0;overflow:hidden;">
+                        <div style="overflow-x:auto;">
+                            <table class="data-table" id="workersTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Worker</th>
+                                        <th>Category</th>
+                                        <th>Location</th>
+                                        <th>Rating</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="workersTbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── PENDING REVIEWS ─── -->
+                <div id="secPending" style="display:none;">
+                    <div style="margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.25rem;margin-bottom:.25rem;">Pending Worker Reviews</h2>
+                        <p class="text-dim" style="font-size:.85rem;">Workers who registered via the website — review
+                            and approve or reject.</p>
+                    </div>
+                    <div id="pendingList"></div>
+                </div>
+
+                <!-- ── ADD WORKER ─── -->
+                <div id="secAdd" style="display:none;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.25rem;">Add New Worker</h2>
+                        <button class="btn btn-secondary btn-sm" id="btnBackFromAdd">← Cancel</button>
+                    </div>
+                    <div class="panel">
                         <h3>Worker Information</h3>
-                        <form id="worker-form">
-                            <div class="form-grid">
-                                <div class="fg"><label>Full Name *</label><input type="text" id="w-name" required
-                                        placeholder="e.g. Muhammad Asif"></div>
-                                <div class="fg"><label>Phone Number *</label><input type="text" id="w-phone" required
+                        <form id="addWorkerForm">
+                            <div class="fg-grid">
+                                <div class="fg"><label>Full Name *</label><input type="text" id="wName" required
+                                        placeholder="e.g. Muhammad Asif Khan"></div>
+                                <div class="fg"><label>Phone Number *</label><input type="text" id="wPhone" required
                                         placeholder="03XX-XXXXXXX"></div>
                                 <div class="fg">
                                     <label>Category *</label>
-                                    <select id="w-category" required>
+                                    <select id="wCategory" required>
                                         <option value="">Select Category</option>
                                     </select>
                                 </div>
-                                <div class="fg"><label>Experience (Years) *</label><input type="number" id="w-exp"
+                                <div class="fg"><label>Years of Experience *</label><input type="number" id="wExp"
                                         required min="0" placeholder="e.g. 5"></div>
-                                <div class="fg"><label>City *</label>
-                                    <select id="w-city" required>
+                                <div class="fg">
+                                    <label>City *</label>
+                                    <select id="wCity" required>
                                         <option value="">Select City</option>
                                         <option>Lahore</option>
                                         <option>Karachi</option>
@@ -379,203 +598,332 @@
                                         <option>Faisalabad</option>
                                         <option>Rawalpindi</option>
                                         <option>Multan</option>
+                                        <option>Other</option>
                                     </select>
                                 </div>
-                                <div class="fg"><label>Area / Locality *</label><input type="text" id="w-area" required
-                                        placeholder="e.g. Johar Town, DHA..."></div>
-                                <div class="fg"><label>Price / Rate</label><input type="text" id="w-price"
+                                <div class="fg"><label>Area / Locality *</label><input type="text" id="wArea" required
+                                        placeholder="e.g. Johar Town, DHA, Gulberg..."></div>
+                                <div class="fg"><label>Price / Rate</label><input type="text" id="wPrice"
                                         placeholder="e.g. Rs. 500/visit"></div>
                                 <div class="fg"></div>
                                 <div class="fg full">
                                     <label>Description / About *</label>
-                                    <textarea id="w-desc" rows="3" required
-                                        placeholder="Describe skills and experience..."></textarea>
+                                    <textarea id="wDesc" rows="3" required
+                                        placeholder="Describe worker's skills, experience, and service quality..."></textarea>
                                 </div>
                             </div>
-                            <div style="display:flex;gap:1rem;">
-                                <button type="submit" class="btn btn-primary"><i class='bx bx-check'></i> Save
-                                    Worker</button>
-                                <button type="button" id="btn-cancel" class="btn btn-secondary">Cancel</button>
+                            <div style="display:flex;gap:.75rem;margin-top:1.25rem;">
+                                <button type="submit" class="btn btn-primary"><i class='bx bx-check'></i> Add Worker to
+                                    Directory</button>
+                                <button type="button" id="btnCancelAdd" class="btn btn-secondary">Cancel</button>
                             </div>
                         </form>
                     </div>
                 </div>
 
-                <!-- SECTION: Categories -->
-                <div id="sec-cats" style="display:none;">
-                    <div class="admin-header">
-                        <h2>Service Categories</h2>
+                <!-- ── CATEGORIES ─── -->
+                <div id="secCats" style="display:none;">
+                    <div style="margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.25rem;margin-bottom:.25rem;">Service Categories</h2>
+                        <p class="text-dim" style="font-size:.85rem;">All 22 service categories in the directory</p>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Icon</th>
-                                    <th>Category Name</th>
-                                    <th>Emergency</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cats-tbody"></tbody>
-                        </table>
+                    <div class="panel" style="padding:0;overflow:hidden;">
+                        <div style="overflow-x:auto;">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Icon</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Workers</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="catsTbody"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-            </main>
-        </div>
-    </div>
+            </div><!-- /admin-content -->
+        </div><!-- /admin-main -->
+
+    </div><!-- /adminUI -->
 
     <script src="js/data.js"></script>
     <script>
-        // ── Auth ──────────────────────────────────────────────────────
-        const _u = "YWRtaW4=", _p = "YWRtaW4xMjM=";
+        // ── Credentials ────────────────────────────────────────────
+        const _u = 'YWRtaW4=', _p = 'YWRtaW4xMjM=';
+        function isLoggedIn() { return sessionStorage.getItem('adminLoggedIn') === 'true'; }
 
-        function checkLogin() {
-            return sessionStorage.getItem('adminLoggedIn') === 'true';
-        }
-
-        document.getElementById('login-form').addEventListener('submit', function (e) {
+        // ── Login ──────────────────────────────────────────────────
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const user = document.getElementById('admin-user').value.trim();
-            const pass = document.getElementById('admin-pass').value.trim();
-            if (btoa(user) === _u && btoa(pass) === _p) {
+            const u = document.getElementById('uname').value.trim();
+            const p = document.getElementById('upass').value.trim();
+            if (btoa(u) === _u && btoa(p) === _p) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
-                bootAdmin();
+                boot();
             } else {
-                document.getElementById('login-err').style.display = 'block';
+                document.getElementById('loginErr').style.display = 'block';
             }
         });
 
-        document.getElementById('btn-logout').addEventListener('click', () => {
+        document.getElementById('btnLogout').addEventListener('click', () => {
             sessionStorage.removeItem('adminLoggedIn');
             location.reload();
         });
 
-        // ── Boot ──────────────────────────────────────────────────────
-        function bootAdmin() {
-            document.getElementById('login-overlay').style.display = 'none';
-            document.getElementById('admin-ui').style.display = 'block';
-            renderWorkersTable();
-            populateCategorySelect();
-            setupNav();
+        // ── Boot ───────────────────────────────────────────────────
+        function boot() {
+            document.getElementById('loginOverlay').style.display = 'none';
+            document.getElementById('adminUI').style.display = 'flex';
+            populateCatSelect();
+            updateBadge();
+            showSection('Dash');
         }
 
-        // ── Navigation ─────────────────────────────────────────────────
+        // ── Navigation ─────────────────────────────────────────────
+        const sections = ['Dash', 'Workers', 'Pending', 'Add', 'Cats'];
         function showSection(name) {
-            ['sec-workers', 'sec-add', 'sec-cats'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
+            sections.forEach(s => {
+                document.getElementById('sec' + s).style.display = 'none';
+                const nav = document.getElementById('nav' + s);
+                if (nav) nav.classList.remove('active');
             });
-            ['nav-workers', 'nav-add', 'nav-cats'].forEach(id => {
-                document.getElementById(id).classList.remove('active');
-            });
-            document.getElementById('sec-' + name).style.display = 'block';
-            document.getElementById('nav-' + name).classList.add('active');
+            document.getElementById('sec' + name).style.display = 'block';
+            const nav = document.getElementById('nav' + name);
+            if (nav) nav.classList.add('active');
+
+            // Load section data
+            if (name === 'Dash') loadDash();
+            if (name === 'Workers') loadWorkersTable();
+            if (name === 'Pending') loadPending();
+            if (name === 'Cats') loadCats();
+            if (name === 'Add') document.getElementById('addWorkerForm').reset();
+
+            const headings = { Dash: 'Dashboard', Workers: 'All Workers', Pending: 'Pending Reviews', Add: 'Add New Worker', Cats: 'Categories' };
+            document.getElementById('pageHeading').textContent = headings[name] || name;
         }
 
-        function setupNav() {
-            document.getElementById('nav-workers').addEventListener('click', e => { e.preventDefault(); showSection('workers'); });
-            document.getElementById('nav-add').addEventListener('click', e => { e.preventDefault(); showSection('add'); });
-            document.getElementById('nav-cats').addEventListener('click', e => { e.preventDefault(); showSection('cats'); renderCatsTable(); });
-            document.getElementById('btn-go-add').addEventListener('click', () => showSection('add'));
-            document.getElementById('btn-back-workers').addEventListener('click', () => showSection('workers'));
-            document.getElementById('btn-cancel').addEventListener('click', () => showSection('workers'));
-            document.getElementById('worker-form').addEventListener('submit', handleAddWorker);
+        function updateBadge() {
+            const count = db.getPendingWorkers().length;
+            document.getElementById('pendingCount').textContent = count;
+            document.getElementById('pendingCount').style.display = count > 0 ? 'flex' : 'none';
         }
 
-        // ── Render Workers Table ───────────────────────────────────────
-        function renderWorkersTable() {
-            const workers = db.getWorkers();
-            const tbody = document.getElementById('workers-tbody');
-            if (!workers || workers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-dim);">No workers found.</td></tr>';
-                return;
+        // Nav click handlers
+        document.getElementById('navDash').addEventListener('click', e => { e.preventDefault(); showSection('Dash'); });
+        document.getElementById('navWorkers').addEventListener('click', e => { e.preventDefault(); showSection('Workers'); });
+        document.getElementById('navPending').addEventListener('click', e => { e.preventDefault(); showSection('Pending'); });
+        document.getElementById('navAdd').addEventListener('click', e => { e.preventDefault(); showSection('Add'); });
+        document.getElementById('navCats').addEventListener('click', e => { e.preventDefault(); showSection('Cats'); });
+        document.getElementById('btnGoAdd2').addEventListener('click', () => showSection('Add'));
+        document.getElementById('btnBackFromAdd').addEventListener('click', () => showSection('Workers'));
+        document.getElementById('btnCancelAdd').addEventListener('click', () => showSection('Workers'));
+
+        // ── Dashboard ──────────────────────────────────────────────
+        function loadDash() {
+            const allW = db.getWorkers();
+            const pend = db.getPendingWorkers();
+
+            document.getElementById('statTotal').textContent = allW.length;
+            document.getElementById('statPending').textContent = pend.length;
+
+            // Pending alert
+            const alert = document.getElementById('pendingAlert');
+            if (pend.length > 0) {
+                alert.style.display = 'flex';
+                document.getElementById('pendingMsg').textContent = `${pend.length} new worker registration${pend.length > 1 ? 's' : ''} pending approval!`;
+            } else {
+                alert.style.display = 'none';
             }
-            tbody.innerHTML = workers.map(w => `
+
+            document.getElementById('btnGoReview').onclick = () => showSection('Pending');
+
+            // Recent 5 workers
+            const recent = allW.slice(-5).reverse();
+            document.getElementById('dashTbody').innerHTML = recent.map(w => `
     <tr>
-      <td style="color:var(--text-dim);font-size:.8rem;">#${w.id}</td>
       <td>
-        <div style="display:flex;align-items:center;gap:.75rem;">
-          <img src="${w.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(w.name) + '&background=2563EB&color=fff&size=64'}"
-               style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--border);" loading="lazy">
+        <div style="display:flex;align-items:center;gap:.6rem;">
+          <img src="${w.photo}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+          <span style="font-weight:600;">${w.name}</span>
+        </div>
+      </td>
+      <td><span class="badge" style="margin:0;font-size:.75rem;">${w.category}</span></td>
+      <td style="font-size:.85rem;">${w.city || '—'}</td>
+      <td style="color:var(--accent);font-weight:700;">⭐ ${w.rating}</td>
+      <td>${w.verified ? '<span class="approved-badge">✓ Verified</span>' : '<span class="badge" style="background:var(--surface-2);color:var(--text-muted);">Standard</span>'}</td>
+    </tr>`).join('');
+        }
+
+        // ── Workers Table ──────────────────────────────────────────
+        function loadWorkersTable(filter = '') {
+            let workers = db.getWorkers();
+            if (filter) {
+                const q = filter.toLowerCase();
+                workers = workers.filter(w =>
+                    w.name.toLowerCase().includes(q) ||
+                    w.category.toLowerCase().includes(q) ||
+                    (w.city || '').toLowerCase().includes(q)
+                );
+            }
+            document.getElementById('workersSubtitle').textContent = `${workers.length} workers in the directory`;
+
+            document.getElementById('workersTbody').innerHTML = workers.length ? workers.map(w => `
+    <tr>
+      <td style="color:var(--text-dim);font-size:.78rem;">#${String(w.id).slice(-4)}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:.7rem;">
+          <img src="${w.photo}" style="width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--border);" loading="lazy">
           <div>
-            <div style="font-weight:600;">${w.name}</div>
+            <div style="font-weight:600;">${w.name} ${w.verified ? '<i class="bx bxs-badge-check" style="color:var(--primary-light);font-size:.9rem;"></i>' : ''}</div>
             <div style="font-size:.75rem;color:var(--text-dim);">${w.phone || ''}</div>
           </div>
         </div>
       </td>
-      <td><span class="badge">${w.category}</span></td>
-      <td style="font-size:.85rem;">${w.area ? w.area + ', ' : ''}${w.city || w.location || '—'}</td>
+      <td><span class="badge" style="margin:0;">${w.category}</span></td>
+      <td style="font-size:.85rem;">${[w.area, w.city].filter(Boolean).join(', ') || w.location || '—'}</td>
+      <td style="font-weight:700;color:var(--accent);">⭐ ${w.rating}</td>
       <td>
-        <div style="line-height:1.8;">
-          <span style="color:var(--accent);font-weight:700;">⭐ ${w.rating}</span><br>
-          <span style="font-size:.78rem;color:${w.available ? 'var(--secondary)' : 'var(--text-dim)'};">
-            ${w.available ? '● Available' : '○ Busy'}
-          </span>
-          ${w.verified ? '<br><span style="font-size:.78rem;color:#3B82F6;font-weight:600;">✓ Verified</span>' : ''}
-        </div>
+        <span style="font-size:.78rem;font-weight:600;color:${w.available ? 'var(--secondary)' : 'var(--text-dim)'};">
+          ${w.available ? '● Available' : '○ Busy'}
+        </span>
       </td>
       <td>
-        <div style="display:flex;gap:.4rem;">
-          <a href="profile.html?id=${w.id}" class="tbl-action tbl-view" title="View Profile"><i class='bx bx-show'></i></a>
-          <button class="tbl-action tbl-delete" onclick="deleteWorker(${w.id})" title="Delete"><i class='bx bx-trash'></i></button>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap;">
+          <a href="profile.html?id=${w.id}" class="act-btn act-view" title="View Profile"><i class='bx bx-show'></i></a>
+          ${w.id > 1000 ? `<button class="act-btn act-delete" onclick="doDelete(${w.id})" title="Delete"><i class='bx bx-trash'></i></button>` : ''}
         </div>
       </td>
-    </tr>`).join('');
+    </tr>`).join('') :
+                '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-dim);">No workers found.</td></tr>';
         }
 
-        // ── Render Categories Table ────────────────────────────────────
-        function renderCatsTable() {
+        document.getElementById('searchWorker').addEventListener('input', function () {
+            loadWorkersTable(this.value);
+        });
+
+        // ── Pending Reviews ────────────────────────────────────────
+        function loadPending() {
+            const pending = db.getPendingWorkers();
+            const container = document.getElementById('pendingList');
+
+            if (pending.length === 0) {
+                container.innerHTML = `
+      <div class="panel text-center" style="padding:3rem;">
+        <div style="font-size:3rem;margin-bottom:1rem;">✅</div>
+        <h3>All caught up!</h3>
+        <p class="mt-2">No pending worker registrations at the moment.</p>
+      </div>`;
+                return;
+            }
+
+            container.innerHTML = pending.map(w => `
+    <div class="panel" style="margin-bottom:1.5rem; border-color:rgba(245,158,11,.2);">
+      <div style="display:flex;align-items:flex-start;gap:1.25rem;flex-wrap:wrap;">
+        <img src="${w.photo}" style="width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid rgba(245,158,11,.4);flex-shrink:0;">
+        <div style="flex:1;min-width:200px;">
+          <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem;">
+            <strong style="font-size:1.05rem;">${w.name}</strong>
+            <span class="pending-badge">⏳ Pending Review</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem .75rem;font-size:.85rem;color:var(--text-muted);margin-bottom:.75rem;">
+            <span>📋 <strong>Service:</strong> ${w.category}</span>
+            <span>📍 <strong>Location:</strong> ${[w.area, w.city].filter(Boolean).join(', ')}</span>
+            <span>📞 <strong>Phone:</strong> ${w.phone}</span>
+            <span>💼 <strong>Experience:</strong> ${w.experience} years</span>
+            <span>💰 <strong>Price:</strong> ${w.price || 'Not specified'}</span>
+            <span>🕒 <strong>Registered:</strong> ${w.registeredAt ? new Date(w.registeredAt).toLocaleDateString() : 'Unknown'}</span>
+          </div>
+          <div style="background:var(--surface-2);border-radius:var(--radius-sm);padding:.75rem 1rem;font-size:.85rem;color:var(--text-muted);margin-bottom:1rem;">
+            📝 ${w.description || 'No description provided.'}
+          </div>
+          <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+            <button class="act-btn act-approve" onclick="doApprove(${w.id})" style="padding:.5rem 1.25rem;">
+              <i class='bx bx-check-circle'></i> Approve & Add to Directory
+            </button>
+            <button class="act-btn act-reject" onclick="doReject(${w.id})" style="padding:.5rem 1.25rem;">
+              <i class='bx bx-x-circle'></i> Reject Registration
+            </button>
+            <a href="tel:${w.phone}" class="act-btn act-view" style="padding:.5rem 1.25rem;">
+              <i class='bx bx-phone'></i> Call Worker
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+        }
+
+        // ── Categories ─────────────────────────────────────────────
+        function loadCats() {
             const cats = db.getCategories();
-            const tbody = document.getElementById('cats-tbody');
-            tbody.innerHTML = cats.map(c => `
-    <tr>
-      <td style="font-size:1.5rem;">${c.icon}</td>
+            const allW = db.getWorkers();
+            document.getElementById('catsTbody').innerHTML = cats.map(c => {
+                const count = allW.filter(w => w.category === c.name).length;
+                return `<tr>
+      <td style="font-size:1.6rem;">${c.icon}</td>
       <td style="font-weight:600;">${c.name}</td>
-      <td>${c.emergency ? '<span class="badge badge-red">🚨 Emergency</span>' : '<span class="badge" style="background:var(--surface-2);color:var(--text-muted);">Standard</span>'}</td>
-    </tr>`).join('');
+      <td>${c.emergency ? '<span class="badge badge-red">🚨 Emergency</span>' : '<span class="text-dim" style="font-size:.85rem;">Standard</span>'}</td>
+      <td><span class="badge" style="background:rgba(37,99,235,.1);">${count} workers</span></td>
+    </tr>`;
+            }).join('');
         }
 
-        // ── Populate Category Select ───────────────────────────────────
-        function populateCategorySelect() {
-            const sel = document.getElementById('w-category');
+        // ── Populate Category Select ───────────────────────────────
+        function populateCatSelect() {
+            const sel = document.getElementById('wCategory');
             db.getCategories().forEach(c => {
                 const o = document.createElement('option');
-                o.value = c.name;
-                o.textContent = `${c.icon} ${c.name}`;
+                o.value = c.name; o.textContent = `${c.icon} ${c.name}`;
                 sel.appendChild(o);
             });
         }
 
-        // ── Add Worker ────────────────────────────────────────────────
-        function handleAddWorker(e) {
+        // ── Add Worker Form ────────────────────────────────────────
+        document.getElementById('addWorkerForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const name = document.getElementById('w-name').value.trim();
-            const phone = document.getElementById('w-phone').value.trim();
-            const cat = document.getElementById('w-category').value;
-            const exp = parseInt(document.getElementById('w-exp').value);
-            const city = document.getElementById('w-city').value;
-            const area = document.getElementById('w-area').value.trim();
-            const price = document.getElementById('w-price').value.trim() || 'To be discussed';
-            const desc = document.getElementById('w-desc').value.trim();
+            const name = document.getElementById('wName').value.trim();
+            const phone = document.getElementById('wPhone').value.trim();
+            const cat = document.getElementById('wCategory').value;
+            const exp = parseInt(document.getElementById('wExp').value) || 0;
+            const city = document.getElementById('wCity').value;
+            const area = document.getElementById('wArea').value.trim();
+            const price = document.getElementById('wPrice').value.trim() || 'To be discussed';
+            const desc = document.getElementById('wDesc').value.trim();
             const wa = '92' + phone.replace(/^0/, '').replace(/-/g, '');
 
-            db.addWorker({ name, phone, whatsapp: wa, category: cat, city, area, experience: exp, price, description: desc, skills: [cat] });
+            db.addWorkerDirect({ name, phone, whatsapp: wa, category: cat, city, area, experience: exp, price, description: desc });
+            updateBadge();
+            showSection('Workers');
+            alert(`✅ "${name}" has been added to the directory!`);
+        });
 
-            document.getElementById('worker-form').reset();
-            renderWorkersTable();
-            showSection('workers');
-            alert(`✅ Worker "${name}" added successfully!`);
-        }
-
-        // ── Delete Worker ─────────────────────────────────────────────
-        window.deleteWorker = function (id) {
-            if (!confirm('Delete this worker? This cannot be undone.')) return;
-            db.deleteWorker(id);
-            renderWorkersTable();
+        // ── Actions ────────────────────────────────────────────────
+        window.doApprove = function (id) {
+            db.approveWorker(id);
+            updateBadge();
+            loadPending();
+            alert('✅ Worker approved! They are now visible on the public site.');
         };
 
-        // ── Start ─────────────────────────────────────────────────────
-        if (checkLogin()) {
-            bootAdmin();
+        window.doReject = function (id) {
+            if (!confirm('Reject and delete this registration? This cannot be undone.')) return;
+            db.rejectWorker(id);
+            updateBadge();
+            loadPending();
+        };
+
+        window.doDelete = function (id) {
+            if (!confirm('Delete this worker from the directory?')) return;
+            db.deleteWorker(id);
+            loadWorkersTable();
+            updateBadge();
+        };
+
+        // ── Start ──────────────────────────────────────────────────
+        if (isLoggedIn()) {
+            boot();
         }
     </script>
 </body>
