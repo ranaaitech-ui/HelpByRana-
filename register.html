@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register as a Worker — Help By Rana</title>
+    <meta name="description"
+        content="Join Help By Rana as a verified worker. Register for free and start getting customers today.">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><span class="logo-icon">🔧</span> Help By <span>Rana</span></a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="workers.html">Find Workers</a>
+                <a href="register.html" class="active">Join as Worker</a>
+            </div>
+            <div class="nav-cta">
+                <a href="index.html" class="btn btn-secondary btn-sm">← Home</a>
+                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div
+        style="background:rgba(37,99,235,.06); border-bottom:1px solid var(--border); padding:3rem 0; text-align:center;">
+        <span class="section-eyebrow">Free Registration</span>
+        <h1 style="font-size:clamp(1.75rem,3vw,2.5rem);margin-top:.5rem;">Join as a Worker</h1>
+        <p class="mt-2">Register for free. Get found by hundreds of customers in your city.</p>
+    </div>
+
+    <div class="container section-sm reg-wrap">
+
+        <!-- Success Banner -->
+        <div class="success-banner" id="success-banner">
+            <div class="icon">🎉</div>
+            <h2>Registration Submitted!</h2>
+            <p class="mt-2">Thank you for registering. Your profile is being reviewed by our team.<br>You will be added
+                to our directory within <strong>24 hours</strong>. For faster approval, WhatsApp us at
+                <strong>0300-0000000</strong>.</p>
+            <a href="workers.html" class="btn btn-primary btn-lg mt-4">Browse Workers</a>
+        </div>
+
+        <form id="reg-form">
+            <!-- Personal Info -->
+            <div class="form-section">
+                <h3><i class='bx bx-user'></i> Personal Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" id="r-name" required placeholder="e.g. Muhammad Asif Khan">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" id="r-phone" required placeholder="03XX-XXXXXXX">
+                    </div>
+                    <div class="form-group">
+                        <label>WhatsApp Number</label>
+                        <input type="tel" id="r-whatsapp" placeholder="03XX-XXXXXXX (if different)">
+                    </div>
+                    <div class="form-group">
+                        <label>City *</label>
+                        <select id="r-city" required>
+                            <option value="">Select City</option>
+                            <option value="Lahore">Lahore</option>
+                            <option value="Karachi">Karachi</option>
+                            <option value="Islamabad">Islamabad</option>
+                            <option value="Faisalabad">Faisalabad</option>
+                            <option value="Rawalpindi">Rawalpindi</option>
+                            <option value="Multan">Multan</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Area / Locality *</label>
+                        <input type="text" id="r-area" required placeholder="e.g. Johar Town, Gulberg, Defence...">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Info -->
+            <div class="form-section">
+                <h3><i class='bx bx-briefcase'></i> Service Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Service Category *</label>
+                        <select id="r-category" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Years of Experience *</label>
+                        <input type="number" id="r-exp" required min="0" max="50" placeholder="e.g. 5">
+                    </div>
+                    <div class="form-group full">
+                        <label>Estimated Price / Rate</label>
+                        <input type="text" id="r-price" placeholder="e.g. Rs. 500 per visit, Rs. 1000 per day">
+                    </div>
+                    <div class="form-group full">
+                        <label>About You / Skills *</label>
+                        <textarea id="r-desc" rows="4" required
+                            placeholder="Describe your skills, experience, and what kind of work you do... (min. 50 characters)"></textarea>
+                        <span class="form-hint" id="char-count">0 / 50 characters minimum</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary btn-lg"><i class='bx bx-check'></i> Submit
+                    Registration</button>
+                <a href="index.html" class="btn btn-secondary btn-lg">Cancel</a>
+            </div>
+            <p class="form-hint mt-2">By registering, you agree to our terms of service. Your profile will be reviewed
+                before going live.</p>
+        </form>
+    </div>
+
+    <!-- Benefits strip -->
+    <div class="container section-sm">
+        <div class="card"
+            style="background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(37,99,235,.06));border-color:rgba(37,99,235,.2);">
+            <h3 class="text-center mb-3">Why Join Help By Rana?</h3>
+            <div class="grid-4" style="text-align:center;">
+                <div>
+                    <div style="font-size:2rem;margin-bottom:.5rem;">🆓</div><strong>Free Forever</strong>
+                    <p style="font-size:.85rem;">No registration fee. No commission.</p>
+                </div>
+                <div>
+                    <div style="font-size:2rem;margin-bottom:.5rem;">👁️</div><strong>Wide Visibility</strong>
+                    <p style="font-size:.85rem;">Seen by hundreds of customers daily.</p>
+                </div>
+                <div>
+                    <div style="font-size:2rem;margin-bottom:.5rem;">✅</div><strong>Verified Badge</strong>
+                    <p style="font-size:.85rem;">Get a verified badge to build trust.</p>
+                </div>
+                <div>
+                    <div style="font-size:2rem;margin-bottom:.5rem;">📱</div><strong>Direct Contact</strong>
+                    <p style="font-size:.85rem;">Customers call you directly. No middleman.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container footer-bottom">
+            <p>© 2026 Help By Rana.</p>
+            <a href="index.html" class="btn btn-sm btn-secondary">← Home</a>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('open');
+        });
+
+        // Populate categories
+        const sel = document.getElementById('r-category');
+        db.getCategories().forEach(c => {
+            const o = document.createElement('option');
+            o.value = c.name; o.textContent = `${c.icon} ${c.name}`;
+            sel.appendChild(o);
+        });
+
+        // Char count
+        const desc = document.getElementById('r-desc');
+        const cnt = document.getElementById('char-count');
+        desc.addEventListener('input', () => {
+            const n = desc.value.length;
+            cnt.textContent = `${n} / 50 characters minimum`;
+            cnt.style.color = n >= 50 ? 'var(--secondary)' : 'var(--text-dim)';
+        });
+
+        // Form submit
+        document.getElementById('reg-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('r-name').value.trim();
+            const phone = document.getElementById('r-phone').value.trim();
+            const city = document.getElementById('r-city').value;
+            const area = document.getElementById('r-area').value.trim();
+            const cat = document.getElementById('r-category').value;
+            const exp = parseInt(document.getElementById('r-exp').value);
+            const price = document.getElementById('r-price').value.trim() || 'To be discussed';
+            const descVal = document.getElementById('r-desc').value.trim();
+            const wa = document.getElementById('r-whatsapp').value.trim() || `92${phone.replace(/^0/, '').replace(/-/g, '')}`;
+
+            if (descVal.length < 50) { alert('Please write at least 50 characters in the description.'); return; }
+
+            db.addWorker({ name, phone, category: cat, city, area, experience: exp, price, description: descVal, whatsapp: wa });
+
+            document.getElementById('reg-form').style.display = 'none';
+            document.getElementById('success-banner').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    </script>
+</body>
+
+</html>

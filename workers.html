@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Workers — Help By Rana</title>
+    <meta name="description"
+        content="Browse verified local workers by service, city, and rating. Plumbers, electricians, AC repair, drivers, and more.">
+    <meta name="keywords"
+        content="find workers Pakistan, plumber near me, electrician near me, local helpers, AC repair service">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="index.html" class="logo"><span class="logo-icon">🔧</span> Help By <span>Rana</span></a>
+            <div class="nav-links" id="nav-links">
+                <a href="index.html">Home</a>
+                <a href="workers.html" class="active">Find Workers</a>
+                <a href="register.html">Join as Worker</a>
+                <a href="admin.html">Admin</a>
+            </div>
+            <div class="nav-cta">
+                <a href="register.html" class="btn btn-secondary btn-sm">Join as Worker</a>
+                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div style="background:rgba(37,99,235,.06); border-bottom:1px solid var(--border); padding:2rem 0;">
+        <div class="container">
+            <h1 style="font-size:clamp(1.5rem,3vw,2rem);" id="page-heading">Find a Worker</h1>
+            <p class="mt-1" id="page-sub">Browse from 500+ verified professionals across Pakistan</p>
+        </div>
+    </div>
+
+    <!-- Search + Filter Bar -->
+    <div class="container" style="margin-top:2rem;">
+        <div class="filter-bar">
+            <div>
+                <label>Search</label>
+                <input type="text" id="f-search" placeholder="Name, service, skill...">
+            </div>
+            <div>
+                <label>City</label>
+                <select id="f-city">
+                    <option value="">All Cities</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Faisalabad">Faisalabad</option>
+                    <option value="Rawalpindi">Rawalpindi</option>
+                    <option value="Multan">Multan</option>
+                </select>
+            </div>
+            <div>
+                <label>Category</label>
+                <select id="f-cat">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div>
+                <label>Min. Rating</label>
+                <select id="f-rating">
+                    <option value="">Any</option>
+                    <option value="4.5">4.5+</option>
+                    <option value="4">4.0+</option>
+                    <option value="3">3.0+</option>
+                </select>
+            </div>
+            <div>
+                <label>Experience</label>
+                <select id="f-exp">
+                    <option value="">Any</option>
+                    <option value="10">10+ yrs</option>
+                    <option value="5">5+ yrs</option>
+                    <option value="2">2+ yrs</option>
+                </select>
+            </div>
+            <div>
+                <label>Availability</label>
+                <select id="f-avail">
+                    <option value="">All</option>
+                    <option value="true">Available Now</option>
+                </select>
+            </div>
+            <button class="btn btn-primary btn-sm" id="btn-filter" style="align-self:flex-end;"><i
+                    class='bx bx-filter-alt'></i> Apply</button>
+            <button class="btn btn-secondary btn-sm" id="btn-clear" style="align-self:flex-end;">Clear</button>
+            <div class="results-count" id="results-count"></div>
+        </div>
+
+        <!-- Category quick pills -->
+        <div class="flex gap-1" style="flex-wrap:wrap;margin-bottom:1.5rem;" id="cat-pills"></div>
+
+        <!-- Results Grid -->
+        <div class="grid-4" id="workers-grid"></div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="empty-state" style="display:none;">
+            <div class="icon">🔍</div>
+            <h3>No workers found</h3>
+            <p>Try adjusting your filters or search term.</p>
+            <button class="btn btn-outline mt-3" id="clear-empty">Clear Filters</button>
+        </div>
+    </div>
+
+    <!-- Some spacing -->
+    <div style="height:4rem;"></div>
+
+    <!-- Footer (minimal) -->
+    <footer class="footer">
+        <div class="container footer-bottom">
+            <p>© 2026 Help By Rana. All rights reserved.</p>
+            <a href="index.html" class="btn btn-sm btn-secondary">← Back to Home</a>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script>
+        // ── Init ────────────────────────────────────────────────────
+        const params = new URLSearchParams(location.search);
+        let allWorkers = db.getWorkers();
+        const categories = db.getCategories();
+
+        // Populate category select
+        const fCat = document.getElementById('f-cat');
+        categories.forEach(c => {
+            const o = document.createElement('option');
+            o.value = c.name; o.textContent = `${c.icon} ${c.name}`;
+            fCat.appendChild(o);
+        });
+
+        // Category pills
+        const pillContainer = document.getElementById('cat-pills');
+        categories.slice(0, 10).forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'tag'; btn.style.cursor = 'pointer';
+            btn.innerHTML = `${c.icon} ${c.name}`;
+            btn.addEventListener('click', () => { fCat.value = c.name; applyFilters(); });
+            pillContainer.appendChild(btn);
+        });
+
+        // Read URL params
+        if (params.get('q')) document.getElementById('f-search').value = params.get('q');
+        if (params.get('city')) document.getElementById('f-city').value = params.get('city');
+        if (params.get('cat')) fCat.value = params.get('cat');
+        if (params.get('emergency') === 'true') {
+            document.getElementById('page-heading').textContent = '🚨 Emergency Services';
+            document.getElementById('page-sub').textContent = '24/7 emergency workers available right now';
+            document.getElementById('f-avail').value = 'true';
+        }
+
+        // Update heading for category
+        if (params.get('cat')) {
+            const cat = categories.find(c => c.name === params.get('cat'));
+            if (cat) {
+                document.getElementById('page-heading').innerHTML = `${cat.icon} ${cat.name} Workers`;
+                document.getElementById('page-sub').textContent = `Verified ${cat.name.toLowerCase()} professionals near you`;
+            }
+        }
+
+        // ── Render ────────────────────────────────────────────────────
+        function renderWorkers(list) {
+            const grid = document.getElementById('workers-grid');
+            const empty = document.getElementById('empty-state');
+            document.getElementById('results-count').textContent = `${list.length} worker${list.length !== 1 ? 's' : ''} found`;
+
+            if (list.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+
+            grid.innerHTML = list.map(w => `
+      <div class="worker-card">
+        <div class="worker-card-top">
+          <img src="${w.photo}" alt="${w.name}" class="worker-avatar">
+          <div class="worker-main">
+            <h3>${w.name}</h3>
+            <div class="worker-service">${w.category}</div>
+            <div class="worker-rating">⭐ ${w.rating} <span>(${w.reviews} reviews)</span></div>
+          </div>
+          ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:.75rem;right:.75rem;font-size:.7rem;">✓ Verified</span>' : ''}
+        </div>
+        <div class="worker-meta">
+          <span class="worker-meta-item">📍 ${w.area}, ${w.city}</span>
+          <span class="worker-meta-item">💼 ${w.experience} yrs exp</span>
+          <span class="worker-meta-item">💸 ${w.price}</span>
+          <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available Now' : 'Busy'}</span>
+        </div>
+        <div class="worker-actions">
+          <a href="tel:${w.phone}" class="btn btn-primary btn-sm"><i class='bx bx-phone'></i> Call</a>
+          <a href="https://wa.me/${w.whatsapp}" target="_blank" class="btn btn-green btn-sm"><i class='bx bxl-whatsapp'></i> WA</a>
+          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm">Profile</a>
+        </div>
+      </div>`).join('');
+        }
+
+        // ── Filter ────────────────────────────────────────────────────
+        function applyFilters() {
+            const q = document.getElementById('f-search').value.toLowerCase().trim();
+            const city = document.getElementById('f-city').value;
+            const cat = fCat.value;
+            const rating = parseFloat(document.getElementById('f-rating').value) || 0;
+            const exp = parseInt(document.getElementById('f-exp').value) || 0;
+            const avail = document.getElementById('f-avail').value;
+
+            const result = allWorkers.filter(w =>
+                (!q || w.name.toLowerCase().includes(q) || w.category.toLowerCase().includes(q) || (w.skills || []).some(s => s.toLowerCase().includes(q))) &&
+                (!city || w.city === city) &&
+                (!cat || w.category === cat) &&
+                (w.rating >= rating) &&
+                (w.experience >= exp) &&
+                (!avail || String(w.available) === avail)
+            );
+            renderWorkers(result);
+        }
+
+        // Event listeners
+        document.getElementById('btn-filter').addEventListener('click', applyFilters);
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            ['f-search', 'f-city', 'f-cat', 'f-rating', 'f-exp', 'f-avail'].forEach(id => {
+                const el = document.getElementById(id);
+                el.tagName === 'INPUT' ? el.value = '' : el.value = '';
+            });
+            applyFilters();
+        });
+        document.getElementById('clear-empty').addEventListener('click', () => {
+            document.getElementById('btn-clear').click();
+        });
+        document.getElementById('f-search').addEventListener('keypress', e => { if (e.key === 'Enter') applyFilters(); });
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('open');
+        });
+
+        // Initial render
+        applyFilters();
+    </script>
+</body>
+
+</html>
