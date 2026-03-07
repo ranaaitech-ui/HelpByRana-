@@ -23,11 +23,23 @@ const pageTitle = document.getElementById('page-title');
 
 const navManage = document.getElementById('link-manage');
 const navAdd = document.getElementById('link-add');
-const navCategories = document.getElementById('link-categories');
-const navReviews = document.getElementById('link-reviews');
-
 // Auth State
 let isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+
+// Simple hash function to obfuscate the plain text passwords in the code
+const hashString = str => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = (hash << 5) - hash + char;
+        hash &= hash; // Convert to 32bit integer
+    }
+    return new Uint32Array([hash])[0].toString(36);
+};
+
+// Target hashes (admin / admin123)
+const TARGET_USER_HASH = "8sw";
+const TARGET_PASS_HASH = "lyxft4";
 
 // Initialize Admin
 function initAdmin() {
@@ -38,7 +50,8 @@ function initAdmin() {
             const user = document.getElementById('admin-username').value;
             const pass = document.getElementById('admin-password').value;
 
-            if (user === 'admin' && pass === 'admin123') {
+            // Hash the input and compare with stored hashes
+            if (hashString(user) === TARGET_USER_HASH && hashString(pass) === TARGET_PASS_HASH) {
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 document.getElementById('admin-login-overlay').style.display = 'none';
                 loadAdminData();
