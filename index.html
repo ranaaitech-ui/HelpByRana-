@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Help By Rana — Local Workers Directory</title>
+    <title>Help By Rana — Find Trusted Helpers Near You</title>
     <meta name="description"
-        content="Find trusted local workers in Pakistan. Plumbers, electricians, mechanics, and more. Join as a worker or find help in seconds.">
-    <meta name="keywords" content="plumber Lahore, electrician Karachi, local workers Pakistan, Help By Rana">
-    <link rel="stylesheet" href="css/style.css">
+        content="Pakistan's trusted local workers directory. Find verified plumbers, electricians, mechanics, and more. Join as a worker today.">
+    <!-- Google Fonts: Outfit -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
+    <!-- Boxicons -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -41,6 +42,7 @@
                 <h1>Find Trusted Helpers Near You in Seconds.</h1>
                 <p>Connecting you with verified plumbers, electricians, mechanics, and daily service providers across
                     Pakistan.</p>
+
                 <div class="hero-search mt-3">
                     <div class="search-box">
                         <i class='bx bx-search'></i>
@@ -48,15 +50,17 @@
                         <button class="btn btn-primary" onclick="doSearch()">Search</button>
                     </div>
                 </div>
+
                 <div class="hero-btns mt-3">
                     <a href="workers.html" class="btn btn-primary btn-lg">Find a Worker</a>
-                    <a href="register.html" class="btn btn-outline btn-lg">Join as a Worker</a>
+                    <a href="register.html" class="btn btn-outline btn-lg"><i class='bx bx-user-plus'></i> Join as
+                        Worker</a>
                 </div>
             </div>
             <div class="hero-image">
                 <div class="hero-dots"></div>
                 <div class="hero-circle"></div>
-                <!-- Placeholder for a premium abstract illustration or worker image -->
+                <!-- Premium abstraction for workers -->
                 <div
                     style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:10rem;">
                     👷‍♂️</div>
@@ -94,10 +98,6 @@
                         <h4>Generator Repair</h4>
                         <p>Available 24/7</p>
                     </div>
-                </div>
-                <div class="text-center mt-2 mobile-only">
-                    <a href="workers.html?emergency=true" class="btn btn-accent"><i class='bx bx-phone-call'></i> Get
-                        Emergency Help</a>
                 </div>
             </div>
         </div>
@@ -230,43 +230,57 @@
                 <h2>Are You a Skilled Worker?</h2>
                 <p class="mt-2" style="max-width:480px;margin-inline:auto;">Join our growing network of professionals.
                     Register for free and start getting customers today.</p>
-                <div class="mt-3">
-                    <a href="register.html" class="btn btn-primary btn-lg">Join as a Worker</a>
-                </div>
+                <a href="register.html" class="btn btn-primary btn-lg mt-4"><i class='bx bx-user-plus'></i> Register as
+                    a Worker — It's Free</a>
             </div>
         </div>
     </section>
 
     <!-- ── Footer ─────────────────────────────────────────── -->
-    <footer class="footer">
-        <div class="container footer-inner">
-            <div class="footer-info">
-                <a href="index.html" class="logo">🔧 Help By <span>Rana</span></a>
-                <p class="mt-2">Connecting Pakistan with trusted workers since 2024. Your one-stop shop for all home
-                    maintenance and personal service needs.</p>
-                <div class="social-links mt-2">
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
+    <footer class="footer" style="padding: 4rem 0 2rem; border-top: 1px solid var(--border);">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo" style="margin-bottom:.75rem;"><span class="logo-icon">🔧</span> Help By
+                        <span>Rana</span>
+                    </div>
+                    <p>Pakistan's trusted local workers directory. Connecting skilled professionals with people who need
+                        them — fast, reliable, and affordable.</p>
+                    <div class="social-row">
+                        <a class="social-btn" href="https://facebook.com/helpbyrana" target="_blank" title="Facebook"><i
+                                class='bx bxl-facebook'></i></a>
+                        <a class="social-btn" href="https://wa.me/923000000000" target="_blank" title="WhatsApp"><i
+                                class='bx bxl-whatsapp'></i></a>
+                        <a class="social-btn" href="https://instagram.com/helpbyrana" target="_blank"
+                            title="Instagram"><i class='bx bxl-instagram'></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Popular Services</h4>
+                    <a href="workers.html?cat=Plumber">Plumber</a>
+                    <a href="workers.html?cat=Electrician">Electrician</a>
+                    <a href="workers.html?cat=AC+Repair">AC Repair</a>
+                    <a href="workers.html?cat=Carpenter">Carpenter</a>
+                    <a href="workers.html">View All →</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <a href="index.html">Home</a>
+                    <a href="workers.html">Find a Worker</a>
+                    <a href="register.html">Become a Partner</a>
+                    <a href="admin.html">Admin Login</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <a href="mailto:info@helpbyrana.com"><i class='bx bx-envelope'></i> info@helpbyrana.com</a>
+                    <a href="tel:+923000000000"><i class='bx bx-phone'></i> +92 300 0000000</a>
+                    <p style="margin-top:0.5rem; font-size:0.85rem; color:var(--text-dim);">Lahore, Punjab, Pakistan</p>
                 </div>
             </div>
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="index.html">Home</a>
-                <a href="workers.html">Find a Worker</a>
-                <a href="register.html">Join as Worker</a>
-                <a href="admin.html">Admin Panel</a>
+            <div class="footer-bottom">
+                <p>© 2026 Help By Rana. All rights reserved.</p>
+                <p>Made with ❤️ for Pakistan 🇵🇰</p>
             </div>
-            <div class="footer-links">
-                <h4>Support</h4>
-                <a href="#">Contact Us</a>
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">FAQ</a>
-            </div>
-        </div>
-        <div class="container footer-bottom">
-            <p>© 2026 Help By Rana. All rights reserved.</p>
         </div>
     </footer>
 
@@ -314,39 +328,37 @@
           <div class="worker-main">
             <h3>${w.name}</h3>
             <div class="worker-service">${w.category}</div>
-            <div class="worker-rating">⭐ ${w.rating} <span>(${w.reviews} reviews)</span></div>
+            <div class="worker-rating">⭐ ${w.rating} <span>(${w.reviews})</span></div>
           </div>
-          ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:.75rem;right:.75rem;font-size:0.7rem;">✓ Verified</span>' : ''}
+          ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:1rem;right:1rem;">✓ Verified</span>' : ''}
         </div>
         <div class="worker-meta">
-          <span class="worker-meta-item">📍 ${w.city}</span>
-          <span class="worker-meta-item">💼 ${w.experience} yrs exp</span>
+          <span class="worker-meta-item">📍 ${w.area}, ${w.city}</span>
+          <span class="worker-meta-item">💼 ${w.experience} yrs</span>
+          <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available' : 'Busy'}</span>
         </div>
         <div class="worker-actions">
           <a href="tel:${w.phone}" class="btn btn-primary btn-sm">Call</a>
-          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm">Profile</a>
+          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm"><i class='bx bx-star'></i> Profile & Rate</a>
         </div>
       </div>
     `).join('');
 
         // Render Reviews
-        const reviewsGrid = document.getElementById('reviews-grid');
         const reviews = db.getReviews();
-        reviewsGrid.innerHTML = reviews.map(r => `
-      <div class="review-card">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1rem;">
-          <div style="display:flex; gap:0.75rem; align-items:center;">
-             <div style="width:40px;height:40px;background:var(--primary-light);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">${r.avatar}</div>
-             <div>
-               <div style="font-weight:600;">${r.name}</div>
-               <div style="font-size:0.75rem;color:var(--text-dim);">${r.service} User</div>
-             </div>
-          </div>
-          <div style="color:var(--accent);">⭐ ${r.rating}</div>
+        document.getElementById('reviews-grid').innerHTML = reviews.map(r => `
+    <div class="review-card">
+      <div class="review-stars">${'⭐'.repeat(r.rating)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">${r.avatar}</div>
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="reviewer-meta">${r.service} User</div>
         </div>
-        <p style="font-size:0.9rem; color:var(--text-muted);">"${r.text}"</p>
       </div>
-    `).join('');
+    </div>
+  `).join('');
     </script>
 </body>
 
