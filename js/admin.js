@@ -159,26 +159,30 @@ function renderTable() {
             <td>#${w.id}</td>
             <td>
                 <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <img src="${w.photo}" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
-                    <span style="font-weight: 500;">${w.name}</span>
+                    <img src="${w.photo}" style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border);">
+                    <div>
+                        <div style="font-weight: 600;">${w.name}</div>
+                        <div style="font-size:.75rem;color:var(--text-dim);">${w.phone || ''}</div>
+                    </div>
                 </div>
             </td>
             <td><span class="badge" style="margin: 0;">${w.category}</span></td>
-            <td>${w.location}</td>
+            <td>${w.area ? w.area + ', ' : ''}${w.city || w.location || '—'}</td>
             <td>
                 <div style="display: flex; flex-direction: column; gap: 0.25rem;">
-                    <span style="font-size: 0.8rem;"><i class='bx bxs-star' style="color: var(--accent);"></i> ${w.rating}</span>
-                    ${w.availability.includes('Today') ?
-            `<span style="color: #10B981; font-size: 0.8rem; font-weight: 500;"><i class='bx bx-check-shield'></i> Verified</span>` :
-            `<span style="color: var(--text-light); font-size: 0.8rem;">Unverified</span>`}
+                    <span style="font-size: 0.85rem; color: var(--accent); font-weight:700;">⭐ ${w.rating}</span>
+                    ${(w.available !== undefined ? w.available : (w.availability || '').includes('Today')) ?
+            `<span style="color: #10B981; font-size: 0.8rem; font-weight: 500;">✓ Available</span>` :
+            `<span style="color: var(--text-dim); font-size: 0.8rem;">Busy</span>`}
+                    ${w.verified ? `<span style="color: #3B82F6; font-size: 0.78rem; font-weight:600;">✓ Verified</span>` : ''}
                 </div>
             </td>
             <td>
                 <div class="action-btns">
-                    <button class="btn-success btn-small" onclick="verifyWorker(${w.id})" title="Verify Contact">
-                        <i class='bx bx-check'></i>
-                    </button>
-                    <button class="btn-danger btn-small" onclick="deleteWorker(${w.id})" title="Delete Worker">
+                    <a href="profile.html?id=${w.id}" class="btn-success btn-small" style="display:inline-flex;align-items:center;padding:.3rem .6rem;border-radius:6px;font-size:.8rem;" title="View Profile">
+                        <i class='bx bx-show'></i>
+                    </a>
+                    <button class="btn-danger btn-small" onclick="deleteWorker(${w.id})" title="Delete Worker" style="padding:.3rem .6rem;border-radius:6px;font-size:.8rem;">
                         <i class='bx bx-trash'></i>
                     </button>
                 </div>
@@ -190,26 +194,33 @@ function renderTable() {
 function handleAddWorker(e) {
     e.preventDefault();
 
+    const location = document.getElementById('w-location').value;
+    const [area, ...cityParts] = location.split(',').map(s => s.trim());
+    const city = cityParts.join(',').trim() || area;
+
     const newWorker = {
-        name: document.getElementById('w-name').value,
+        name: document.getElementById('w-name').value.trim(),
         category: document.getElementById('w-category').value,
-        phone: document.getElementById('w-phone').value,
-        location: document.getElementById('w-location').value,
+        phone: document.getElementById('w-phone').value.trim(),
+        whatsapp: '92' + document.getElementById('w-phone').value.replace(/^0/, '').replace(/-/g, ''),
+        area: area,
+        city: city,
         experience: parseInt(document.getElementById('w-exp').value),
-        price: document.getElementById('w-price').value,
-        description: document.getElementById('w-desc').value,
-        rating: 5.0, // Default for new
-        reviewsCount: 0,
-        availability: "Available Today",
+        price: document.getElementById('w-price').value.trim(),
+        description: document.getElementById('w-desc').value.trim(),
+        rating: 5.0,
+        reviews: 0,
+        available: true,
+        verified: false,
         skills: [document.getElementById('w-category').value]
     };
 
     db.addWorker(newWorker);
-    adminWorkers = db.getWorkers(); // Refresh
+    adminWorkers = db.getWorkers();
     renderTable();
     showWorkerTable();
 
-    alert(`Successfully added ${newWorker.name}!`);
+    alert(`✅ Successfully added ${newWorker.name}!`);
 }
 
 function handleAddCategory(e) {
