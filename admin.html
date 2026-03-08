@@ -445,12 +445,20 @@
 
         <!-- Sidebar -->
         <aside class="sidebar">
-            <div class="sidebar-brand">🔧 Help By <span>Rana</span></div>
+            <div class="sidebar-brand">
+                <span class="logo-icon">🔧</span>
+                <div class="logo-container">
+                    Help By <span style="color:var(--primary-light)">Rana</span>
+                    <span class="logo-subtext">A Project of RHM</span>
+                </div>
+            </div>
             <div class="sidebar-label">Management</div>
             <a href="#" id="navDash" class="active"><i class='bx bx-tachometer'></i> Dashboard</a>
             <a href="#" id="navWorkers"><i class='bx bx-list-ul'></i> All Workers</a>
             <a href="#" id="navPending"><i class='bx bx-time-five'></i> Pending Reviews <span class="badge-count"
                     id="pendingCount">0</span></a>
+            <a href="#" id="navPayments"><i class='bx bx-credit-card'></i> Pending Payments <span class="badge-count"
+                    id="paymentsCount">0</span></a>
             <a href="#" id="navAdd"><i class='bx bx-user-plus'></i> Add Worker</a>
             <a href="#" id="navCats"><i class='bx bx-grid-alt'></i> Categories</a>
             <div class="sidebar-bottom">
@@ -486,11 +494,12 @@
                         <div class="stat-card pending-card"><span class="val" id="statPending">0</span>
                             <div class="lbl"><i class='bx bx-time'></i> Pending Approval</div>
                         </div>
+                        <div class="stat-card pending-card" style="border-left: 4px solid var(--accent);"><span
+                                class="val" id="statPayments">0</span>
+                            <div class="lbl"><i class='bx bx-credit-card'></i> Pending Payments</div>
+                        </div>
                         <div class="stat-card"><span class="val" id="statCats" style="color:var(--secondary);">22</span>
                             <div class="lbl"><i class='bx bx-grid-alt'></i> Categories</div>
-                        </div>
-                        <div class="stat-card"><span class="val" style="color:var(--accent);">4.7★</span>
-                            <div class="lbl"><i class='bx bx-star'></i> Avg. Rating</div>
                         </div>
                     </div>
                     <!-- Pending alert box -->
@@ -564,6 +573,16 @@
                             and approve or reject.</p>
                     </div>
                     <div id="pendingList"></div>
+                </div>
+
+                <!-- ── PENDING PAYMENTS ─── -->
+                <div id="secPayments" style="display:none;">
+                    <div style="margin-bottom:1.5rem;">
+                        <h2 style="font-size:1.25rem;margin-bottom:.25rem;">Pending Payments (Lead Unlock)</h2>
+                        <p class="text-dim" style="font-size:.85rem;">Verify the TID amount sent to HUSSAIN MUSTAFA
+                            (0329-0901293).</p>
+                    </div>
+                    <div id="paymentsList"></div>
                 </div>
 
                 <!-- ── ADD WORKER ─── -->

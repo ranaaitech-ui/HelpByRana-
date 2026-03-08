@@ -18,7 +18,13 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="container nav-inner">
-            <a href="index.html" class="logo"><span class="logo-icon">🔧</span> Help By <span>Rana</span></a>
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🔧</span>
+                <div class="logo-container">
+                    Help By <span>Rana</span>
+                    <span class="logo-subtext">A Project of RHM</span>
+                </div>
+            </a>
             <div class="nav-links" id="nav-links">
                 <a href="index.html">Home</a>
                 <a href="workers.html" class="active">Find Workers</a>
@@ -126,7 +132,7 @@
     <script>
         // ── Init ────────────────────────────────────────────────────
         const params = new URLSearchParams(location.search);
-        let allWorkers = db.getWorkers();
+        let allWorkers = [];
         const categories = db.getCategories();
 
         // Populate category select
@@ -238,7 +244,18 @@
         });
 
         // Initial render
-        applyFilters();
+        async function init() {
+            try {
+                // Show loading state
+                document.getElementById('workers-grid').innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 2rem;">⏳ Loading available professionals...</div>';
+
+                allWorkers = await db.getWorkers();
+                applyFilters();
+            } catch (error) {
+                document.getElementById('workers-grid').innerHTML = '<div style="grid-column: 1/-1; text-align:center; color: red;">Failed to load workers. Please try again.</div>';
+            }
+        }
+        init();
     </script>
 </body>
 

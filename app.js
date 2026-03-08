@@ -306,7 +306,13 @@ window.openProfileModal = function (workerId) {
             <div class="profile-header">
                 <img src="${worker.photo}" alt="${worker.name}" class="profile-photo">
                 <div class="profile-actions">
-                    <a href="tel:${worker.phone}" class="btn-primary"><i class='bx bx-phone'></i> Call Now</a>
+                    ${worker.paymentStatus === 'verified' ? `
+                        <a href="tel:${worker.phone}" class="btn-primary"><i class='bx bx-phone'></i> Call Now</a>
+                    ` : worker.paymentStatus === 'pending' ? `
+                        <button class="btn btn-secondary" disabled style="opacity: 0.7; border: 1px solid var(--border);"><i class='bx bx-time'></i> Verification Pending</button>
+                    ` : `
+                        <a href="payment.html?id=${worker.id}" class="btn btn-secondary" style="background: var(--surface-2); color: var(--text-primary); border: 1px solid var(--border);"><i class='bx bx-lock-alt'></i> Pay to Unlock</a>
+                    `}
                     <button class="btn-icon"><i class='bx bx-bookmark' ></i></button>
                     <button class="btn-icon"><i class='bx bx-share-alt' ></i></button>
                 </div>
@@ -341,7 +347,7 @@ window.openProfileModal = function (workerId) {
                 
                 <div class="contact-box">
                     <h3>Contact Information</h3>
-                    <p>${worker.phone}</p>
+                    <p style="margin-bottom: 0.5rem;">${worker.paymentStatus === 'verified' ? worker.phone : `<span style="color: var(--text-dim);"><i class='bx bx-lock-alt'></i> Hidden (Unlock via Payment)</span>`}</p>
                     <span style="color: var(--text-secondary); font-size: 0.9rem;">Mention <strong>Help By Rana</strong> when calling</span>
                 </div>
             </div>

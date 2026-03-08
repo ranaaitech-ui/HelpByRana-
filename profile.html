@@ -113,47 +113,53 @@
 
     const params = new URLSearchParams(location.search);
     const id = parseInt(params.get('id'));
-    const worker = db.getWorkers().find(w => w.id === id);
     const root = document.getElementById('profile-root');
 
-    if (!worker) {
-      root.innerHTML = `
-    <div class="empty-state">
-      <div class="icon">😕</div>
-      <h3>Worker not found</h3>
-      <p>This profile does not exist or may have been removed.</p>
-      <a href="workers.html" class="btn btn-primary mt-3">Browse Workers</a>
-    </div>`;
-    } else {
-      document.title = `${worker.name} — Help By Rana`;
+    async function init() {
+      try {
+        const workers = await db.getWorkers();
+        const worker = workers.find(w => w.id === id);
 
-      // Load user reviews from localStorage
-      function getUserReviews() { return db.getWorkerReviews(id); }
+        if (!worker) {
+          root.innerHTML = `
+        <div class="empty-state">
+          <div class="icon">😕</div>
+          <h3>Worker not found</h3>
+          <p>This profile does not exist or may have been removed.</p>
+          <a href="workers.html" class="btn btn-primary mt-3">Browse Workers</a>
+        </div>`;
+          return;
+        }
 
-      // Compute live rating (merge built-in reviews count with live ones)
-      function getLiveRating() {
-        const reviews = getUserReviews();
-        if (reviews.length === 0) return { avg: worker.rating, count: worker.reviews };
-        const allRatings = reviews.map(r => r.rating);
-        // merge with original built-in reviews (count only, avg weighted)
-        const totalCount = worker.reviews + reviews.length;
-        const totalSum = worker.rating * worker.reviews + allRatings.reduce((a, b) => a + b, 0);
-        return { avg: (totalSum / totalCount).toFixed(1), count: totalCount };
-      }
+        document.title = `${worker.name} — Help By Rana`;
 
-      function renderStarsDisplay(n) {
-        return [1, 2, 3, 4, 5].map(i => `<span style="color:${i <= Math.round(n) ? 'var(--accent)' : 'var(--surface-2)'; font - size: 1.1rem; ">★</span>`).join('');
-      }
+        // Load user reviews from localStorage
+        function getUserReviews() { return db.getWorkerReviews(id); }
 
-      function renderReviewsSection() {
-        const userReviews = getUserReviews();
-        const { avg, count } = getLiveRating();
+        // Compute live rating (merge built-in reviews count with live ones)
+        function getLiveRating() {
+          const reviews = getUserReviews();
+          if (reviews.length === 0) return { avg: worker.rating, count: worker.reviews };
+          const allRatings = reviews.map(r => r.rating);
+          // merge with original built-in reviews (count only, avg weighted)
+          const totalCount = worker.reviews + reviews.length;
+          const totalSum = worker.rating * worker.reviews + allRatings.reduce((a, b) => a + b, 0);
+          return { avg: (totalSum / totalCount).toFixed(1), count: totalCount };
+        }
 
-        // Rating bars
-        const bars = [5, 4, 3, 2, 1].map(n => {
-          const cntN = userReviews.filter(r => r.rating === n).length;
-          const pct = userReviews.length ? Math.round(cntN / userReviews.length * 100) : (n === 5 ? 80 : n === 4 ? 15 : n === 3 ? 4 : 0);
-          return `
+        function renderStarsDisplay(n) {
+          return [1, 2, 3, 4, 5].map(i => `<span style="color:${i <= Math.round(n) ? 'var(--accent)' : 'var(--surface-2)'}; font-size: 1.1rem;">★</span>`).join('');
+        }
+
+        function renderReviewsSection() {
+          const userReviews = getUserReviews();
+          const { avg, count } = getLiveRating();
+
+          // Rating bars
+          const bars = [5, 4, 3, 2, 1].map(n => {
+            const cntN = userReviews.filter(r => r.rating === n).length;
+            const pct = userReviews.length ? Math.round(cntN / userReviews.length * 100) : (n === 5 ? 80 : n === 4 ? 15 : n === 3 ? 4 : 0);
+            return `
         <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem;">
           <span style="width:18px;font-size:.8rem;color:var(--text-dim);">${n}</span>
           <div style="flex:1;height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;">
@@ -161,11 +167,11 @@
           </div>
           <span style="width:30px;font-size:.78rem;color:var(--text-dim);text-align:right;">${pct}%</span>
         </div>`;
-        }).join('');
+          }).join('');
 
-        // User review items
-        const reviewItems = userReviews.length > 0
-          ? userReviews.map(r => `
+          // User review items
+          const reviewItems = userReviews.length > 0
+            ? userReviews.map(r => `
           <div style="padding:1.25rem 0;border-bottom:1px solid var(--border);">
             <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;">
               <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex-shrink:0;">
@@ -180,11 +186,11 @@
             </div>
             ${r.comment ? `<p style="font-size:.875rem;color:var(--text-muted);">"${r.comment}"</p>` : ''}
           </div>`).join('')
-          : `<div style="padding:1.5rem 0;text-align:center;color:var(--text-dim);font-size:.9rem;">
+            : `<div style="padding:1.5rem 0;text-align:center;color:var(--text-dim);font-size:.9rem;">
            No reviews yet. Be the first to rate this worker! 👇
          </div>`;
 
-        return `
+          return `
       <div style="display:flex;gap:3rem;align-items:flex-start;flex-wrap:wrap;margin-bottom:1.5rem;">
         <div style="text-align:center;">
           <div style="font-size:3.5rem;font-weight:900;color:var(--accent);">${avg}</div>
@@ -194,11 +200,11 @@
         <div style="flex:1;min-width:180px;">${bars}</div>
       </div>
       <div id="review-items">${reviewItems}</div>`;
-      }
+        }
 
-      function buildPage() {
-        const { avg, count } = getLiveRating();
-        root.innerHTML = `
+        function buildPage() {
+          const { avg, count } = getLiveRating();
+          root.innerHTML = `
       <div class="profile-layout">
         <!-- Sidebar -->
         <aside class="profile-sidebar">
@@ -212,8 +218,14 @@
             <div class="profile-stat"><span class="val">${worker.experience}</span><span class="lbl">Yrs Exp</span></div>
           </div>
           <div class="profile-actions">
-            <a href="tel:${worker.phone}" class="btn btn-primary w-full"><i class='bx bx-phone'></i> Call Now</a>
-            <a href="https://wa.me/${worker.whatsapp}" target="_blank" class="btn btn-green w-full"><i class='bx bxl-whatsapp'></i> WhatsApp</a>
+            ${worker.paymentStatus === 'verified' ? `
+                <a href="tel:${worker.phone}" class="btn btn-primary w-full"><i class='bx bx-phone'></i> Call Now</a>
+                <a href="https://wa.me/${worker.whatsapp}" target="_blank" class="btn btn-green w-full"><i class='bx bxl-whatsapp'></i> WhatsApp</a>
+            ` : worker.paymentStatus === 'pending' ? `
+                <button class="btn btn-secondary w-full" disabled><i class='bx bx-time'></i> Payment Verification Pending</button>
+            ` : `
+                <a href="payment.html?id=${worker.id}" class="btn btn-secondary w-full" style="background: var(--surface-2); color: var(--text-primary);"><i class='bx bx-lock-alt'></i> Pay Commission to Unlock Contact</a>
+            `}
           </div>
           <div class="divider mt-3 mb-3"></div>
           <div style="font-size:.85rem;color:var(--text-muted);">
@@ -240,7 +252,11 @@
             <p>${worker.description}</p>
             <div class="meta-list mt-3">
               <div class="meta-row"><span class="icon">📍</span><span class="label">Location</span><span class="value">${worker.area || ''}, ${worker.city || ''}</span></div>
-              <div class="meta-row"><span class="icon">📞</span><span class="label">Phone</span><span class="value"><a href="tel:${worker.phone}" style="color:var(--primary-light);">${worker.phone}</a></span></div>
+              <div class="meta-row"><span class="icon">📞</span><span class="label">Phone</span>
+                  <span class="value">
+                      ${worker.paymentStatus === 'verified' ? `<a href="tel:${worker.phone}" style="color:var(--primary-light);">${worker.phone}</a>` : `<span style="color: var(--text-dim);"><i class='bx bx-lock-alt'></i> Hidden (Unlock via Payment)</span>`}
+                  </span>
+              </div>
               <div class="meta-row"><span class="icon">💼</span><span class="label">Experience</span><span class="value">${worker.experience} Years</span></div>
               <div class="meta-row"><span class="icon">💰</span><span class="label">Pricing</span><span class="value">${worker.price}</span></div>
             </div>
@@ -303,48 +319,53 @@
         </div>
       </div>`;
 
-        // Star label update
-        document.querySelectorAll('.star-input input').forEach(inp => {
-          inp.addEventListener('change', () => {
-            const labels = ['', 'Poor 😞', 'Fair 😐', 'Good 🙂', 'Very Good 😊', 'Excellent! 🤩'];
-            document.getElementById('star-label').textContent = labels[inp.value] || '';
-            document.getElementById('star-label').style.color = 'var(--accent)';
+          // Star label update
+          document.querySelectorAll('.star-input input').forEach(inp => {
+            inp.addEventListener('change', () => {
+              const labels = ['', 'Poor 😞', 'Fair 😐', 'Good 🙂', 'Very Good 😊', 'Excellent! 🤩'];
+              document.getElementById('star-label').textContent = labels[inp.value] || '';
+              document.getElementById('star-label').style.color = 'var(--accent)';
+            });
           });
-        });
 
-        // Review form submit
-        document.getElementById('rate-form').addEventListener('submit', function (e) {
-          e.preventDefault();
-          const ratingEl = document.querySelector('.star-input input:checked');
-          if (!ratingEl) { alert('Please select a star rating.'); return; }
-          const rating = parseInt(ratingEl.value);
-          const name = document.getElementById('rev-name').value.trim();
-          const comment = document.getElementById('rev-comment').value.trim();
+          // Review form submit
+          document.getElementById('rate-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const ratingEl = document.querySelector('.star-input input:checked');
+            if (!ratingEl) { alert('Please select a star rating.'); return; }
+            const rating = parseInt(ratingEl.value);
+            const name = document.getElementById('rev-name').value.trim();
+            const comment = document.getElementById('rev-comment').value.trim();
 
-          db.submitReview(id, { rating, name, comment });
+            db.submitReview(id, { rating, name, comment });
 
-          // Show success, hide form inputs
-          document.getElementById('rate-form').style.display = 'none';
-          document.getElementById('rate-success').style.display = 'block';
+            // Show success, hide form inputs
+            document.getElementById('rate-form').style.display = 'none';
+            document.getElementById('rate-success').style.display = 'block';
 
-          // Refresh the reviews section
-          document.getElementById('ratings-body').innerHTML = renderReviewsSection();
-        });
+            // Refresh the reviews section
+            document.getElementById('ratings-body').innerHTML = renderReviewsSection();
+          });
 
-        // Similar workers
-        const similar = db.getWorkers().filter(w => w.category === worker.category && w.id !== id).slice(0, 2);
-        document.getElementById('similar-grid').innerHTML = similar.map(w => `
-      <a href="profile.html?id=${w.id}" class="card" style="display:flex;align-items:center;gap:1rem;">
-        <img src="${w.photo}" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;">
-        <div>
-          <div style="font-weight:600;">${w.name}</div>
-          <div style="font-size:.8rem;color:var(--primary-light);">${w.city} • ⭐ ${w.rating}</div>
-        </div>
-      </a>`).join('') || '<p class="text-dim" style="font-size:.9rem;">No other workers in this category yet.</p>';
+          // Similar workers
+          const similar = workers.filter(w => w.category === worker.category && w.id !== id).slice(0, 2);
+          document.getElementById('similar-grid').innerHTML = similar.map(w => `
+        <a href="profile.html?id=${w.id}" class="card" style="display:flex;align-items:center;gap:1rem;">
+          <img src="${w.photo}" style="width:48px;height:48px;border-radius:50%;flex-shrink:0;object-fit:cover;">
+          <div>
+            <div style="font-weight:600;">${w.name}</div>
+            <div style="font-size:.8rem;color:var(--primary-light);">${w.city} • ⭐ ${w.rating}</div>
+          </div>
+        </a>`).join('') || '<p class="text-dim" style="font-size:.9rem;">No other workers in this category yet.</p>';
+        }
+
+        buildPage();
+      } catch (err) {
+        root.innerHTML = `<div style="text-align:center;color:red;padding:2rem;">Failed to load profile. Connection error.</div>`;
       }
-
-      buildPage();
     }
+
+    init();
   </script>
 </body>
 

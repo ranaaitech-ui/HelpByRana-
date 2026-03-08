@@ -1,0 +1,12 @@
+{
+  "name": "help-by-rana-backend",
+  "version": "1.0.0",
+  "description": "Vercel Serverless Functions Backend for Help By Rana",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.7"
+  }
+}
