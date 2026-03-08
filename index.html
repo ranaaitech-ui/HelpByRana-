@@ -20,13 +20,7 @@
     <!-- ── Navbar ────────────────────────────────────────── -->
     <nav class="navbar">
         <div class="container nav-inner">
-            <a href="index.html" class="logo">
-                <span class="logo-icon">🔧</span>
-                <div class="logo-container">
-                    Help By <span>Rana</span>
-                    <span class="logo-subtext">A Project of RHM</span>
-                </div>
-            </a>
+            <a href="index.html" class="logo"><span class="logo-icon">🔧</span> Help By <span>Rana</span></a>
             <div class="nav-links" id="nav-links">
                 <a href="index.html" class="active">Home</a>
                 <a href="workers.html">Find Workers</a>
@@ -228,29 +222,6 @@
         </div>
     </section>
 
-    <!-- ── Founder Section ────────────────────────────────────── -->
-    <section class="founder-section">
-        <div class="container">
-            <div class="founder-grid">
-                <div class="founder-image-wrap">
-                    <img src="assets/images/founder.jpg" alt="Rana Hussain Mustafa" class="founder-img">
-                    <div class="founder-badge">Founder & CEO</div>
-                </div>
-                <div class="founder-content">
-                    <span class="hero-eyebrow">The Vision Behind Help By Rana</span>
-                    <h2>Empowering Local <span class="highlight">Communities</span></h2>
-                    <p class="founder-quote">"Our mission is to bridge the gap between skilled local workers and those
-                        in need of reliable services. We believe in transparency, trust, and shared prosperity for all
-                        Pakistanis."</p>
-                    <div class="founder-info">
-                        <div class="founder-name">Rana Hussain Mustafa</div>
-                        <div class="founder-title">Founder, Help By Rana</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- ── Join CTA ────────────────────────────────────────── -->
     <section class="section-sm">
         <div class="container">
@@ -270,12 +241,8 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo" style="margin-bottom:.75rem;">
-                        <span class="logo-icon">🔧</span>
-                        <div class="logo-container">
-                            Help By <span>Rana</span>
-                            <span class="logo-subtext">A Project of RHM</span>
-                        </div>
+                    <div class="logo" style="margin-bottom:.75rem;"><span class="logo-icon">🔧</span> Help By
+                        <span>Rana</span>
                     </div>
                     <p>Pakistan's trusted local workers directory. Connecting skilled professionals with people who need
                         them — fast, reliable, and affordable.</p>
@@ -311,8 +278,8 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>© 2026 Help By Rana. A Project of RHM. All rights reserved.</p>
-                <p>Made with ❤️ by <span style="color:var(--primary-light)">Rana Hussain Mustafa</span> 🇵🇰</p>
+                <p>© 2026 Help By Rana. All rights reserved.</p>
+                <p>Made with ❤️ for Pakistan 🇵🇰</p>
             </div>
         </div>
     </footer>
@@ -352,43 +319,30 @@
         });
 
         // Render Featured Workers
-        async function loadFeaturedWorkers() {
-            try {
-                const featuredGrid = document.getElementById('featured-grid');
-                featuredGrid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding: 2rem;">⏳ Loading featured professionals...</div>';
-
-                const allWorkers = await db.getWorkers();
-                const workers = allWorkers.slice(0, 4);
-
-                featuredGrid.innerHTML = workers.map(w => `
-            <div class="worker-card">
-                <div class="worker-card-top">
-                <img src="${w.photo}" alt="${w.name}" class="worker-avatar">
-                <div class="worker-main">
-                    <h3>${w.name}</h3>
-                    <div class="worker-service">${w.category}</div>
-                    <div class="worker-rating">⭐ ${w.rating} <span>(${w.reviews})</span></div>
-                </div>
-                ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:1rem;right:1rem;">✓ Verified</span>' : ''}
-                </div>
-                <div class="worker-meta">
-                <span class="worker-meta-item">📍 ${w.area || ''}, ${w.city || ''}</span>
-                <span class="worker-meta-item">💼 ${w.experience} yrs</span>
-                <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available' : 'Busy'}</span>
-                </div>
-                <div class="worker-actions">
-                <a href="tel:${w.phone}" class="btn btn-primary btn-sm">Call</a>
-                <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm"><i class='bx bx-star'></i> Profile & Rate</a>
-                </div>
-            </div>
-            `).join('');
-            } catch (err) {
-                console.error(err);
-                document.getElementById('featured-grid').innerHTML = '<div style="grid-column: 1/-1; text-align:center; color: red;">Failed to load featured workers.</div>';
-            }
-        }
-
-        loadFeaturedWorkers();
+        const featuredGrid = document.getElementById('featured-grid');
+        const workers = db.getWorkers().slice(0, 4);
+        featuredGrid.innerHTML = workers.map(w => `
+      <div class="worker-card">
+        <div class="worker-card-top">
+          <img src="${w.photo}" alt="${w.name}" class="worker-avatar">
+          <div class="worker-main">
+            <h3>${w.name}</h3>
+            <div class="worker-service">${w.category}</div>
+            <div class="worker-rating">⭐ ${w.rating} <span>(${w.reviews})</span></div>
+          </div>
+          ${w.verified ? '<span class="badge badge-verified" style="position:absolute;top:1rem;right:1rem;">✓ Verified</span>' : ''}
+        </div>
+        <div class="worker-meta">
+          <span class="worker-meta-item">📍 ${w.area}, ${w.city}</span>
+          <span class="worker-meta-item">💼 ${w.experience} yrs</span>
+          <span class="worker-meta-item"><span class="avail-dot ${w.available ? '' : 'offline'}"></span>${w.available ? 'Available' : 'Busy'}</span>
+        </div>
+        <div class="worker-actions">
+          <a href="tel:${w.phone}" class="btn btn-primary btn-sm">Call</a>
+          <a href="profile.html?id=${w.id}" class="btn btn-outline btn-sm"><i class='bx bx-star'></i> Profile & Rate</a>
+        </div>
+      </div>
+    `).join('');
 
         // Render Reviews
         const reviews = db.getReviews();
